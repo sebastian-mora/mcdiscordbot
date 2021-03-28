@@ -1,0 +1,109 @@
+service: mcdiscordbot
+
+
+# You can pin your service to only deploy with a specific Serverless version
+# Check out our docs for more details
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.8
+  lambdaHashingVersion: 20201221
+  region: us-west-2
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "ec2:StartInstances"
+            - "ec2:StopInstances"
+            - "ec2:DescribeInstances"
+          Resource: 
+            - "*"
+        - Effect: "Allow"
+          Action:
+            - "sns:Publish"
+          Resource: 
+            - "SNS_TOPIC_ARN"
+
+plugins:
+  - serverless-python-requirements
+  - serverless-add-api-key
+
+custom:
+  pythonRequirements:
+    dockerizePip: True
+  apiKeys:
+    - name: discordBot
+
+# you can add statements to the Lambda function's IAM Role here
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+
+      Resource: 
+        - "arn:aws:ec2:us-west-2:ACCOUNTID:instance/*"
+package:
+  individually: True
+  exclude:
+    # Exclude everything first.
+    - '**/*'
+
+functions:
+
+  ec2Action:
+    handler: action/action.handler
+    events:
+      - http:
+          path: action
+          method: post
+          private: True
+    package:
+      include:
+        - action/**
+    environment:
+      region: us-west-2
+  
+  getStatus:
+    handler: status/status.handler
+    events:
+      - http:
+          path: status
+          method: get
+          # private: True
+    package:
+      include:
+        - status/**
+
+  listServers:
+    handler: list/list.handler
+    events:
+      - http:
+          path: list
+          method: get
+          private: True
+    package:
+      include:
+        - list/**
+
+  triggerAutoShut:
+    handler: auto/auto.handler
+    events:
+      - schedule: rate(15 minutes)
+    environment:
+      api: STATUS_API_ROUTE
+      region: us-west-2
+      snsArn: SNS_TOPIC_ARN
+    package:
+      include:
+        - auto/**
+
+  billingNotification:
+    handler: billingNotifiy/notify.handler
+    events:
+      - sns: SNS_TOPIC_ARN
+    environment:
+      webhook: DISCORD_WEBHOOK
+    package:
+      include:
+        - billingNotifiy/**
