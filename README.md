@@ -15,7 +15,7 @@ The servers need to be configured and deployed with the following tags Name, Des
 
 SNS and cloud watch need to be created as well.
 
-Long story short this is in a state to be auto deployed, rather use it as a reference on how to implement. 
+Long story short this is not in a state to be auto deployed, rather use it as a reference on how to implement for now. 
 
 ## Usage
 
