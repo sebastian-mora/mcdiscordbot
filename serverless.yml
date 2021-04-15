@@ -13,18 +13,21 @@ provider:
   iam:
     role:
       statements:
+
         - Effect: "Allow"
           Action:
+            - "ec2:DescribeInstances"
             - "ec2:StartInstances"
             - "ec2:StopInstances"
-            - "ec2:DescribeInstances"
+            - "ce:*"
           Resource: 
             - "*"
+
         - Effect: "Allow"
           Action:
             - "sns:Publish"
           Resource: 
-            - "SNS_TOPIC_ARN"
+            - "arn:aws:sns:us-west-2:621056530958:minecraft-alert"
 
 plugins:
   - serverless-python-requirements
@@ -36,13 +39,6 @@ custom:
   apiKeys:
     - name: discordBot
 
-# you can add statements to the Lambda function's IAM Role here
-  iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-
-      Resource: 
-        - "arn:aws:ec2:us-west-2:ACCOUNTID:instance/*"
 package:
   individually: True
   exclude:
@@ -51,6 +47,7 @@ package:
 
 functions:
 
+  # Main function for taking start and stop actions.
   ec2Action:
     handler: action/action.handler
     events:
@@ -63,7 +60,7 @@ functions:
         - action/**
     environment:
       region: us-west-2
-  
+  # Function for using mcstatus to check if a mc server is running 
   getStatus:
     handler: status/status.handler
     events:
@@ -75,6 +72,7 @@ functions:
       include:
         - status/**
 
+  # Function for listing EC2 minecraft servers based on tags
   listServers:
     handler: list/list.handler
     events:
@@ -86,24 +84,26 @@ functions:
       include:
         - list/**
 
-  triggerAutoShut:
-    handler: auto/auto.handler
+  # Function for SNS to send message to discord
+  # Triggered by SNS
+  sendDiscordMessage:          
+    handler: sendDiscordMessage/send.handler
     events:
-      - schedule: rate(15 minutes)
-    environment:
-      api: STATUS_API_ROUTE
-      region: us-west-2
-      snsArn: SNS_TOPIC_ARN
+      - sns:
+          arn: arn:aws:sns:us-west-2:621056530958:minecraft-alert
     package:
       include:
-        - auto/**
+        - sendDiscordMessage/**
+    environment:
+      webhook: https://discord.com/api/webhooks/824478695006928956/O38JRoxLSANII8F8c_ykgPLt7-DcFaIycWiL05kPGwgfs8G17A_NNkZyRCN3mPP_fUaZ
 
-  billingNotification:
+  # Function to check account total per month.
+  # Triggered by cloudwatch
+
+  billingNotification:          
     handler: billingNotifiy/notify.handler
     events:
-      - sns: SNS_TOPIC_ARN
-    environment:
-      webhook: DISCORD_WEBHOOK
+      - schedule: rate(3 days)
     package:
       include:
         - billingNotifiy/**

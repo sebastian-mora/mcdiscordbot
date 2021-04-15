@@ -1,32 +1,51 @@
 import json
-import requests
-import os
+import boto3
+from datetime import date
+import datetime
+import calendar
 
-hook = os.environ['webhook']
+def get_month_day_range(date):
+    first_day = date.replace(day = 1)
+    last_day = date.replace(day = calendar.monthrange(date.year, date.month)[1])
+    return first_day, last_day
 
 def handler(event, context):
-
-    message = event['Records'][0]['Sns']['Message']
-
-    data = {
-        "content" : "",
-        "username" : "Minecraft Bot Alert"
+    billing_client = boto3.client('ce')
+    # getting dates (yyyy-MM-dd) and converting to string 
+    today = date.today() 
+    # yesterday = today - datetime.timedelta(days = 10) 
+    # str_today = str(today) 
+    # str_yesterday = str(yesterday)
+    
+    y, t = get_month_day_range(today)
+    
+    print(y,t)
+    
+    # connecting to cost explorer to get daily aws usage 
+    response = billing_client.get_cost_and_usage( 
+       TimePeriod={ 
+         'Start': str(y), 
+         'End': str(today) }, 
+       Granularity='MONTHLY', 
+       Metrics=[ 'UnblendedCost',] 
+    )
+    
+    
+    # iteract through the response to get the daily amount
+    for r in response['ResultsByTime']:
+        str_amount=(r['Total']['UnblendedCost']['Amount'])
+    
+    #convert the amount to float
+    amount = float(str_amount)
+    
+    sns = boto3.client('sns')
+    
+    
+    response = sns.publish(
+       TopicArn='arn:aws:sns:us-west-2:621056530958:minecraft-alert',
+       Message=f'Total montly cost: {amount} '
+     )
+    return {
+        'statusCode': 200,
+        'body': json.dumps(amount)
     }
-
-    #leave this out if you dont want an embed
-    #for all params, see https://discordapp.com/developers/docs/resources/channel#embed-object
-    data["embeds"] = [
-        {
-            "title" : "Alert",
-            "description": str(message)
-        }
-    ]
-
-    result = requests.post(hook, json = data)
-
-    try:
-        result.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        print(err)
-    else:
-        print("Payload delivered successfully, code {}.".format(result.status_code))
