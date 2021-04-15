@@ -11,20 +11,16 @@ def get_month_day_range(date):
 
 def handler(event, context):
     billing_client = boto3.client('ce')
+
     # getting dates (yyyy-MM-dd) and converting to string 
     today = date.today() 
-    # yesterday = today - datetime.timedelta(days = 10) 
-    # str_today = str(today) 
-    # str_yesterday = str(yesterday)
     
-    y, t = get_month_day_range(today)
-    
-    print(y,t)
+    yesterday, today = get_month_day_range(today)
     
     # connecting to cost explorer to get daily aws usage 
     response = billing_client.get_cost_and_usage( 
        TimePeriod={ 
-         'Start': str(y), 
+         'Start': str(yesterday), 
          'End': str(today) }, 
        Granularity='MONTHLY', 
        Metrics=[ 'UnblendedCost',] 
