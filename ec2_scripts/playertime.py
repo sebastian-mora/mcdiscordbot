@@ -1,16 +1,17 @@
 import os
 import re
 import boto3
+from decimal import Decimal
 
-
-def update_player_time(username):
+def update_player(username, individual_cost):
   response = table.get_item(Key={
   'username': username
   })
 
   if response.get('Item'):
     player = response['Item']
-    player['minutes'] = int(player['minutes']) + increment
+    player['minutes'] = int(player['minutes'] + 1)
+    player['cost'] = round(player['cost'] + Decimal(individual_cost), 4)
     table.put_item(Item=player)
     print("Updated player time")
   
@@ -20,7 +21,8 @@ def update_player_time(username):
 def create_player(username):
   player = {
     "username": username,
-    "minutes": 1
+    "minutes": 0,
+    "cost": Decimal(0.0)
   }
   table.put_item(Item=player)
   print(f"Creating new player: {username}")
@@ -35,8 +37,10 @@ users = [re.sub('\x1b[^m]*m\n', '', user) for user in users]
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('minecraft_players')
-increment = 1
 
+ec2_cost = .11
+individual_cost = (ec2_cost / 60) / len(users)
 
 for username in users:
-  update_player_time(username)
+  if len(username) > 0:
+    update_player(username, individual_cost)

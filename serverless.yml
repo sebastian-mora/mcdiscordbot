@@ -29,6 +29,23 @@ provider:
           Resource: 
             - "arn:aws:sns:us-west-2:621056530958:minecraft-alert"
 
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:GetItem"
+            - "dynamodb:Scan"
+          Resource:
+            - "arn:aws:dynamodb:us-west-2:621056530958:table/minecraft_players"
+      
+        - Effect: "Allow"
+          Action:
+            - "ec2:DescribeNetworkInterfaces"
+            - "ec2:CreateNetworkInterface"
+            - "ec2:DeleteNetworkInterface"
+            - "ec2:DescribeInstances"
+            - "ec2:AttachNetworkInterface"
+          Resource:
+            - "*"
+
 plugins:
   - serverless-python-requirements
   - serverless-add-api-key
@@ -107,3 +124,30 @@ functions:
     package:
       include:
         - billingNotifiy/**
+  
+  # Allow users to read player billing 
+  playerBilling:          
+    handler: playerBilling/playerBilling.handler
+    events:
+      - http:
+          path: playerBilling
+          method: get
+          private: True
+    package:
+      include:
+        - playerBilling/**
+
+  mcCommand:          
+    handler: mccommand/command.handler
+    events:
+      - http:
+          path: cmd
+          method: post
+          private: True
+    environment:
+      rconpass: 8h8AT3zVjPUGgrsQxc
+    package:
+      include:
+        - mccommand/**
+
+        
