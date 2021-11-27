@@ -65,7 +65,7 @@ functions:
 
   # Main function for taking start and stop actions.
   ec2Action:
-    handler: action/action.handler
+    handler: functions/action/action.handler
     events:
       - http:
           path: action
@@ -73,12 +73,12 @@ functions:
           private: True
     package:
       include:
-        - action/**
+        - functions/action/**
     environment:
       region: us-west-2
   # Function for using mcstatus to check if a mc server is running 
   getStatus:
-    handler: status/status.handler
+    handler: functions/status/status.handler
     events:
       - http:
           path: status
@@ -86,11 +86,11 @@ functions:
           # private: True
     package:
       include:
-        - status/**
+        - functions/status/**
 
   # Function for listing EC2 minecraft servers based on tags
   listServers:
-    handler: list/list.handler
+    handler: functions/list/list.handler
     events:
       - http:
           path: list
@@ -98,35 +98,36 @@ functions:
           private: True
     package:
       include:
-        - list/**
+        - functions/list/**
 
   # Function for SNS to send message to discord
   # Triggered by SNS
   sendDiscordMessage:          
-    handler: sendDiscordMessage/send.handler
+    handler: functions/sendDiscordMessage/send.handler
     events:
       - sns:
-          arn: arn:aws:sns:us-west-2:621056530958:minecraft-alert
+          arn: !Ref mcalerts
+          topicName: mcalerts
     package:
       include:
-        - sendDiscordMessage/**
+        - functions/sendDiscordMessage/**
     environment:
-      webhook: https://discord.com/api/webhooks/824478695006928956/O38JRoxLSANII8F8c_ykgPLt7-DcFaIycWiL05kPGwgfs8G17A_NNkZyRCN3mPP_fUaZ
+      webhook: ${ssm:disscord-webhook}
 
   # Function to check account total per month.
   # Triggered by cloudwatch
 
   billingNotification:          
-    handler: billingNotifiy/notify.handler
+    handler: functions/billingNotifiy/notify.handler
     events:
       - schedule: rate(15 days)
     package:
       include:
-        - billingNotifiy/**
+        - functions/billingNotifiy/**
   
   # Allow users to read player billing 
   playerBilling:          
-    handler: playerBilling/playerBilling.handler
+    handler: functions/playerBilling/playerBilling.handler
     events:
       - http:
           path: playerBilling
@@ -134,19 +135,24 @@ functions:
           private: True
     package:
       include:
-        - playerBilling/**
+        - functions/playerBilling/**
 
   mcCommand:          
-    handler: mccommand/command.handler
+    handler: functions/mccommand/command.handler
     events:
       - http:
           path: cmd
           method: post
           private: True
     environment:
-      rconpass: 8h8AT3zVjPUGgrsQxc
+      rconpass: ${ssm:rconpass}
     package:
       include:
-        - mccommand/**
+        - functions/mccommand/**
 
-        
+resources:
+  Resources:
+    mcalerts:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: mcalerts       
