@@ -15,3 +15,13 @@ variable "public_subnet_cidr" {
 variable "alert-lambda-arn" {
   default = "arn:aws:lambda:us-west-2:621056530958:function:mcdiscordbot-dev-sendDiscordMessage"
 }
+
+variable "discord-webhook" {
+  type = string
+  sensitive=true
+}
+
+variable "rconpass" {
+  type = string
+  sensitive = true
+}
