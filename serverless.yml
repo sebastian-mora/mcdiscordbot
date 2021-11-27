@@ -106,7 +106,8 @@ functions:
     handler: sendDiscordMessage/send.handler
     events:
       - sns:
-          arn: arn:aws:sns:us-west-2:621056530958:minecraft-alert
+          arn: !Ref mcalerts
+          topicName: mcalerts
     package:
       include:
         - sendDiscordMessage/**
@@ -149,4 +150,9 @@ functions:
       include:
         - mccommand/**
 
-        
+resources:
+  Resources:
+    mcalerts:
+      Type: AWS::SNS::Topic
+      Properties:
+        TopicName: mcalerts       
