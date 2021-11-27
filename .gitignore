@@ -2,3 +2,4 @@
 /.serverless
 /aws
 /node_modules
+*.tfvars
