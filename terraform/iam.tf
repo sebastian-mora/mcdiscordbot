@@ -41,7 +41,7 @@ resource "aws_iam_role_policy" "test_policy" {
                 "dynamodb:GetItem",
                 "dynamodb:Scan"
             ],
-            "Resource": "${aws_dynamodb_table.mc-dynamodb-table.arn}"
+            "Resource": "${aws_dynamodb_table.mc-table.arn}"
         },
 
         {
