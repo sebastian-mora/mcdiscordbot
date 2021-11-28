@@ -18,6 +18,22 @@ chmod +x /home/ubuntu/server/server.jar
 aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
 # Setup minecraft service
+cat << EOF > /etc/systemd/system/minecraft@.service 
+[Unit]
+Description=Minecraft Server: %i
+After=network.target
+
+[Service]
+WorkingDirectory=/home/ubuntu/server/%i
+
+Restart=always
+
+ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
+
+EOF
+
+systemctl start minecraft@survival
+systemctl enable minecraft@survival
 
 # Enable crontab
 cat /home/ubuntu/server/crontab >> /etc/crontab
