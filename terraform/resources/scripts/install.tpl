@@ -8,14 +8,14 @@ unzip awscliv2.zip
 ./aws/install
 
 # Download server
-mkdir server
-wget -O ./server/server.jar ${url}
-echo "eula=true" > ./server/eula.txt
+mkdir /home/ubuntu/server
+wget -O /home/ubuntu/server/server.jar ${url}
+echo "eula=true" > /home/ubuntu/server/eula.txt
 
 # Pull scripts
-aws s3 cp s3://${bucket}/ .
+aws s3 sync s3://${bucket}/ .
 
 # Setup minecraft service
 
 # Enable crontab
-cat crontab >> /etc/crontab
+cat /home/ubuntu/server/crontab >> /etc/crontab
