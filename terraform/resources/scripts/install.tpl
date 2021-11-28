@@ -17,6 +17,9 @@ chmod +x /home/ubuntu/server/server.jar
 # Pull scripts
 aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
+# Pull latest world
+
+
 # Setup minecraft service
 cat << EOF > /etc/systemd/system/minecraft@.service 
 [Unit]
@@ -34,4 +37,9 @@ systemctl start minecraft@survival
 systemctl enable minecraft@survival
 
 # Enable crontab
-cat /home/ubuntu/server/crontab >> /etc/crontab
+cat << EOF >> /etc/crontab
+15 * * * * sh sh /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
+15 * * * * sh sh /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
+1 * * * * sh sh /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
+@reboot sh /home/ubuntu/scripts/alert.sh
+EOF
