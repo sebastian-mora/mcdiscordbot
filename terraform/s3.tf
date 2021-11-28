@@ -5,7 +5,7 @@ resource "random_string" "random" {
 
 resource "aws_s3_bucket" "mc-worlds" {
 
-  bucket = "mc-worlds-${random_string.random.result}"
+  bucket = "mc-worlds-${lower(random_string.random.result)}"
   acl    = "private"
   versioning {
     enabled = true
