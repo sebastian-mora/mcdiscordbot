@@ -16,7 +16,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_key_pair" "deployer" {
   key_name   = "yubi-key"
-  public_key = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN+Dsw+xeCsZsFhja7ievReHDO7Nk/AtfcQvR6WICLccAAAABHNzaDo="
+  public_key = "sk-ssh-ed25519 AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN+Dsw+xeCsZsFhja7ievReHDO7Nk/AtfcQvR6WICLccAAAABHNzaDo="
 }
 
 resource "aws_instance" "mc1" {
