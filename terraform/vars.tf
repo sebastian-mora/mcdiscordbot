@@ -21,3 +21,8 @@ variable "rconpass" {
   type      = string
   sensitive = true
 }
+
+variable "mc_server_url" {
+  description = "JAR Url for mc version to download"'
+  defdefault = "https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
+}

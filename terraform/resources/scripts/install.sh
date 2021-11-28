@@ -9,7 +9,7 @@ unzip awscliv2.zip
 
 # Download server
 mkdir server
-wget -O ./server/server.jar https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar
+wget -O ./server/server.jar ${var.mc_server_url}
 echo "eula=true" > ./server/eula.txt
 
 # Pull scripts
