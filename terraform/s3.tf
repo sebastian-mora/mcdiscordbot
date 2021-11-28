@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "mc-worlds" {
 }
 
 resource "aws_s3_bucket_object" "upload-scripts" {
-  for_each = fileset("ec2_scripts/", "*")
+  for_each = fileset("resources/", "*")
   bucket   = aws_s3_bucket.mc-worlds.id
   key      = each.value
   source   = "resources/scripts/${each.value}"
