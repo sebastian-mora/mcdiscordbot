@@ -25,9 +25,7 @@ After=network.target
 
 [Service]
 WorkingDirectory=/home/ubuntu/server/%i
-
 Restart=always
-
 ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
 
 EOF
