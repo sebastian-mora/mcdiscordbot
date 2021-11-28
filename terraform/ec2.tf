@@ -25,6 +25,7 @@ resource "aws_instance" "mc1" {
   key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
+  security_groups = [ aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id ]
   user_data                   = file("resources/scripts/install.sh")
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
@@ -43,6 +44,29 @@ resource "aws_security_group" "mc-sg" {
     description      = "Allow MC Server"
     from_port        = 25565
     to_port          = 25565
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+resource "aws_security_group" "allow-ssh-public" {
+  description = "Allow mc connections"
+  name        = "mc-sg"
+
+  ingress {
+    description      = "Allow SSH"
+    from_port        = 22
+    to_port          = 22
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
