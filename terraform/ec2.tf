@@ -26,7 +26,7 @@ resource "aws_instance" "mc1" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   security_groups = [ aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id ]
-  user_data                   = template_file.ec2_install_script_mc
+  user_data                   = data.template_file.ec2_install_script_mc
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
     "Name"        = "Vanilla"
@@ -86,7 +86,7 @@ resource "aws_security_group" "allow-ssh-public" {
 data "template_file" "ec2_install_script_mc" {
   template = file("./resources/install.tpl")
     vars = {
-      bucket = aws_s3_bucket.mc-data.name
+      bucket = aws_s3_bucket.mc-worlds.name
       url = var.mc_server_url
     }
 }
