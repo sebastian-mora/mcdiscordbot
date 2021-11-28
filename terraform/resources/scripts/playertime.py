@@ -36,7 +36,7 @@ users = users.split(",")
 users = [re.sub('\x1b[^m]*m\n', '', user) for user in users]
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
-table = dynamodb.Table('minecraft_players')
+table = dynamodb.Table('mc-table')
 
 ec2_cost = .11
 individual_cost = (ec2_cost / 60) / len(users)

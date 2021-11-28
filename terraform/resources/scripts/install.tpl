@@ -28,11 +28,11 @@ export SNS_TOPIC=${sns_topic}
 # Setup minecraft service
 cat << EOF > /etc/systemd/system/minecraft@.service 
 [Unit]
-Description=Minecraft Server: %i
+Description=Minecraft Server
 After=network.target
 
 [Service]
-WorkingDirectory=/home/ubuntu/server/%i
+WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
 
