@@ -86,7 +86,7 @@ resource "aws_security_group" "allow-ssh-public" {
 data "template_file" "ec2_install_script_mc" {
   template = file("./resources/install.tpl")
     vars = {
-      bucket = aws_s3_bucket.mc-worlds.name
+      bucket = aws_s3_bucket.mc-worlds.id
       url = var.mc_server_url
     }
 }
