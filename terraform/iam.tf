@@ -37,13 +37,20 @@ resource "aws_iam_role_policy" "test_policy" {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
+                "s3:PutObject",
+                "s3:GetObject",
                 "dynamodb:PutItem",
                 "dynamodb:GetItem",
-                "dynamodb:Scan"
+                "dynamodb:Scan",
+                "s3:ListBucket",
+                "s3:DeleteObject"
             ],
-            "Resource": "${aws_dynamodb_table.mc-table.arn}"
+            "Resource": [
+                "${aws_s3_bucket.mc-worlds.arn}/*",
+                "${aws_s3_bucket.mc-worlds.arn}",
+                "${aws_dynamodb_table.mc-table.arn}"
+            ]
         },
-
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
