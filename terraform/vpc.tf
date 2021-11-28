@@ -6,7 +6,7 @@ resource "aws_vpc" "mc_vpc" {
 }
 
 resource "aws_subnet" "mc_public" {
-  vpc_id                  = aws_vpc.mc_vpc
+  vpc_id                  = aws_vpc.mc_vpc.id
   cidr_block              = var.public_subnet_cidr
   map_public_ip_on_launch = true
 }
@@ -22,7 +22,7 @@ resource "aws_internet_gateway" "ig" {
 # Create the Internet Access
 resource "aws_route" "public_route" {
   route_table_id         = aws_route_table.route_table.id
-  destination_cidr_block = var.public_subnet_cidr.id
+  destination_cidr_block = var.public_subnet_cidr
   gateway_id             = aws_internet_gateway.ig.id
 }
 
