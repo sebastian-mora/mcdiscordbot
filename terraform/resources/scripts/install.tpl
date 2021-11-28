@@ -9,11 +9,11 @@ unzip awscliv2.zip
 
 # Download server
 mkdir server
-wget -O ./server/server.jar ${var.mc_server_url}
+wget -O ./server/server.jar ${url}
 echo "eula=true" > ./server/eula.txt
 
 # Pull scripts
-aws s3 cp s3://${aws_s3_bucket.mc-worlds.name}/scripts/ .
+aws s3 cp s3://${bucket}/ .
 
 # Setup minecraft service
 
