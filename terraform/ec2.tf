@@ -61,7 +61,7 @@ resource "aws_security_group" "mc-sg" {
 
 resource "aws_security_group" "allow-ssh-public" {
   description = "Allow mc connections"
-  name        = "mc-sg"
+  name        = "allow-ssh-public"
 
   ingress {
     description      = "Allow SSH"
