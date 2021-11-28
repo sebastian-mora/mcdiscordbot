@@ -25,7 +25,7 @@ resource "aws_instance" "mc1" {
   key_name = aws_key_pair.deployer.key_name
   subnet_id                   = aws_subnet.mc_public.id
   associate_public_ip_address = true
-  user_data = "${file("ec2_scripts/install.sh")}"
+  user_data = "${file("../ec2_scripts/install.sh")}"
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
 }
 
