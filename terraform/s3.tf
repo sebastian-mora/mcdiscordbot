@@ -19,6 +19,6 @@ resource "aws_s3_bucket_object" "upload-scripts" {
   for_each = fileset("ec2_scripts/", "*")
   bucket   = aws_s3_bucket.mc-worlds.id
   key      = each.value
-  source   = "scripts/${each.value}"
-  etag     = filemd5("scripts/${each.value}")
+  source   = "resources/scripts/${each.value}"
+  etag     = filemd5("resources/scripts/${each.value}")
 }

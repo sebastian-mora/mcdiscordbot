@@ -15,8 +15,8 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_key_pair" "deployer" {
-  key_name   = "yubi-key"
-  public_key = "sk-ssh-ed25519 AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN+Dsw+xeCsZsFhja7ievReHDO7Nk/AtfcQvR6WICLccAAAABHNzaDo="
+  key_name   = "aws-dev"
+  public_key = "${file("resources/aws-dev.pub")}"
 }
 
 resource "aws_instance" "mc1" {
@@ -25,7 +25,7 @@ resource "aws_instance" "mc1" {
   key_name = aws_key_pair.deployer.key_name
   subnet_id                   = aws_subnet.mc_public.id
   associate_public_ip_address = true
-  user_data = "${file("../ec2_scripts/install.sh")}"
+  user_data = "${file("resources/scripts/install.sh")}"
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
 }
 
