@@ -3,21 +3,21 @@ variable "region" {
 }
 
 variable "vpc_cidr" {
-    description = "CIDR for the whole VPC"
-    default = "10.0.0.0/16"
+  description = "CIDR for the whole VPC"
+  default     = "10.0.0.0/16"
 }
 
 variable "public_subnet_cidr" {
-    description = "CIDR for the Public Subnet"
-    default = "10.0.10.0/24"
+  description = "CIDR for the Public Subnet"
+  default     = "10.0.10.0/24"
 }
 
 variable "discord-webhook" {
-  type = string
-  sensitive=true
+  type      = string
+  sensitive = true
 }
 
 variable "rconpass" {
-  type = string
+  type      = string
   sensitive = true
 }

@@ -3,13 +3,13 @@ resource "aws_vpc" "mc_vpc" {
 }
 
 resource "aws_subnet" "mc_public" {
-  vpc_id = aws_vpc.mc_vpc.id
-  cidr_block = var.vpc_cidr
+  vpc_id                  = aws_vpc.mc_vpc.id
+  cidr_block              = var.vpc_cidr
   map_public_ip_on_launch = true
 }
 # Create the Route Table
 resource "aws_route_table" "route_table" {
-    vpc_id = aws_vpc.mc_vpc.id
+  vpc_id = aws_vpc.mc_vpc.id
 }
 
 resource "aws_internet_gateway" "ig" {
