@@ -1,5 +1,10 @@
+resource "random_string" "random" {
+  length           = 6
+  special          = false
+}
+
 resource "aws_s3_bucket" "mc-worlds" {
-  bucket = "mc-worlds"
+  bucket = "mc-worlds-${random_string.random}"
   acl    = "private"
   versioning {
     enabled = true
