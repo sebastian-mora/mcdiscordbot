@@ -16,18 +16,23 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_key_pair" "deployer" {
   key_name   = "aws-dev"
-  public_key = "${file("resources/aws-dev.pub")}"
+  public_key = file("resources/aws-dev.pub")
 }
 
 resource "aws_instance" "mc1" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m4.large"
-  key_name = aws_key_pair.deployer.key_name
+  key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = aws_subnet.mc_public.id
-  availability_zone = "us-west-2a"
+  availability_zone           = "us-west-2a"
   associate_public_ip_address = true
-  user_data = "${file("resources/scripts/install.sh")}"
+  user_data                   = file("resources/scripts/install.sh")
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
+  tags = {
+    "Name"        = "Vanilla"
+    "Description" = "Vanilla Minecraft Server"
+    "Minecraft"   = true
+  }
 }
 
 

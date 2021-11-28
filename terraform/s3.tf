@@ -1,6 +1,6 @@
 resource "random_string" "random" {
-  length           = 6
-  special          = false
+  length  = 6
+  special = false
 }
 
 resource "aws_s3_bucket" "mc-worlds" {
