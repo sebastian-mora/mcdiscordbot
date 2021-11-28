@@ -14,11 +14,18 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+resource "aws_key_pair" "deployer" {
+  key_name   = "yubi-key"
+  public_key = "sk-ssh-ed25519@openssh.com AAAAGnNrLXNzaC1lZDI1NTE5QG9wZW5zc2guY29tAAAAIN+Dsw+xeCsZsFhja7ievReHDO7Nk/AtfcQvR6WICLccAAAABHNzaDo="
+}
+
 resource "aws_instance" "mc1" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m4.large"
+  key_name = aws_key_pair.deployer.key_name
   subnet_id                   = aws_subnet.mc_public.id
   associate_public_ip_address = true
+  user_data = "${file("ec2_scripts/install.sh")}"
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
 }
 
