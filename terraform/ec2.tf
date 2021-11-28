@@ -39,7 +39,7 @@ resource "aws_instance" "mc1" {
 resource "aws_security_group" "mc-sg" {
   description = "Allow mc connections"
   name        = "mc-sg"
-
+  vpc_id = module.vpc.vpc_id
   ingress {
     description      = "Allow MC Server"
     from_port        = 25565
@@ -62,7 +62,7 @@ resource "aws_security_group" "mc-sg" {
 resource "aws_security_group" "allow-ssh-public" {
   description = "Allow mc connections"
   name        = "allow-ssh-public"
-
+  vpc_id = module.vpc.vpc_id
   ingress {
     description      = "Allow SSH"
     from_port        = 22
