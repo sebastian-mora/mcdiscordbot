@@ -1,6 +1,6 @@
 resource "aws_vpc" "mc_vpc" {
   cidr_block = var.vpc_cidr
-  tags {
+  tags = {
     Name = "Minecraft VPC"
   }
 }
