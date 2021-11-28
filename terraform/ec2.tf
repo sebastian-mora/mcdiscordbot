@@ -19,20 +19,6 @@ resource "aws_key_pair" "deployer" {
   public_key = file("resources/aws-dev.pub")
 }
 
-resource "aws_ebs_volume" "world-vol" {
-  availability_zone = aws_instance.mc1.availability_zone
-  size              = 10
-  tags = {
-    "Name" = "Vanilla"
-  }
-}
-
-resource "aws_volume_attachment" "ebs_att" {
-  device_name = "/dev/sdf"
-  volume_id   = aws_ebs_volume.world-vol.id
-  instance_id = aws_instance.mc1.id
-}
-
 
 resource "aws_instance" "mc1" {
   ami                         = data.aws_ami.ubuntu.id
