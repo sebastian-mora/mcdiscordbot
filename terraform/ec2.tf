@@ -89,5 +89,6 @@ data "template_file" "ec2_install_script_mc" {
     vars = {
       bucket = aws_s3_bucket.mc-worlds.id
       url = var.mc_server_url
+      sns_topic= "arn:aws:sns:${data.aws_caller_identity.current.account_id}:${data.aws_region.current.name}:mcalerts"
     }
 }

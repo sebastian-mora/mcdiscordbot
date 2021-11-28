@@ -19,6 +19,11 @@ aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
 # Pull latest world
 
+# Setup S3 Backup script
+export S3_BUCKET=${bucket}
+export BACKUP_LIMIT=3
+export SNS_TOPIC=${sns_topic}
+
 
 # Setup minecraft service
 cat << EOF > /etc/systemd/system/minecraft@.service 
