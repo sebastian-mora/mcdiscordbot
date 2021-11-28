@@ -1,5 +1,8 @@
 resource "aws_vpc" "mc_vpc" {
   cidr_block = var.vpc_cidr
+  tags {
+    Name = "Minecraft VPC"
+  }
 }
 
 resource "aws_subnet" "mc_public" {
@@ -19,7 +22,7 @@ resource "aws_internet_gateway" "ig" {
 # Create the Internet Access
 resource "aws_route" "public_route" {
   route_table_id         = aws_route_table.route_table.id
-  destination_cidr_block = var.public_subnet_cidr
+  destination_cidr_block = var.public_subnet_cidr.id
   gateway_id             = aws_internet_gateway.ig.id
 }
 
