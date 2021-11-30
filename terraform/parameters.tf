@@ -28,13 +28,13 @@ resource "aws_ssm_parameter" "sns_topic" {
 }
 
 resource "aws_ssm_parameter" "backup-bucket" {
-  name = "alert-sns"
+  name = "backup-bucket"
   type = "SecureString"
   value = aws_s3_bucket.mc-worlds.id
 }
 
 resource "aws_ssm_parameter" "backup-version-limit" {
-  name = "alert-sns"
+  name = "version-limit"
   type = "SecureString"
   value = "3"
 }
