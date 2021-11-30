@@ -30,7 +30,7 @@ resource "aws_instance" "mc1" {
   user_data                   = data.template_file.ec2_install_script_mc.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"        = "Vanilla"
+    "Name"        = "Vanilla-New"
     "Description" = "Vanilla Minecraft Server"
     "Minecraft"   = true
   }
