@@ -3,8 +3,7 @@ import boto3
 import os
 import time
 
-# region = os.environ['region']
-region='us-west-2'
+region = os.environ['region']
 ec2 = boto3.client('ec2', region_name=region)
 
 def list_instances_by_tag_value(tagkey, tagvalue):
@@ -62,12 +61,9 @@ def runCommand(instance_id, cmd):
 def handler(event, context):
   
   try:
-      # body = json.loads(event['body'])
-      # cmd = body['cmd']
-      # server_name = body['servername']
-
-      cmd='list'
-      server_name='Vanilla-New'
+      body = json.loads(event['body'])
+      cmd = body['cmd']
+      server_name = body['servername']
 
       instances = list_instances_by_tag_value("Name", server_name)
       if len(instances) > 0:
@@ -97,5 +93,3 @@ def handler(event, context):
         "statusCode": 500,
         "body": json.dumps(str(e))
       }
-
-print(handler("", ""))
