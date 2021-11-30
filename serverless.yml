@@ -34,7 +34,7 @@ provider:
             - "dynamodb:GetItem"
             - "dynamodb:Scan"
           Resource:
-            - ${ssm:/mc/dynamodb-mc}
+            - ${ssm:/mc/mcdata}
       
         - Effect: "Allow"
           Action:
