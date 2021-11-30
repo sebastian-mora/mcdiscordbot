@@ -48,14 +48,17 @@ EOF
 systemctl start minecraft@survival
 systemctl enable minecraft@survival
 
-# Enable crontab
-cat << EOF >> /etc/crontab
+
+# Setup Crontabs
+crontab -l > crontab_new 
+cat << EOF >> crontab_new 
 15 * * * * sh sh /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
 15 * * * * sh sh /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
 1 * * * * sh sh /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
 @reboot sh /home/ubuntu/scripts/alert.sh
 EOF
-
+crontab crontab_new
+rm crontab_new
 
 # Update owner of folders
 chown ubuntu /home/ubuntu/server
