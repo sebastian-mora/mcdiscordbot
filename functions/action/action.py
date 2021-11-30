@@ -4,8 +4,8 @@ import os
 import time 
 
 region = os.environ['region']
-
 ec2 = boto3.client('ec2', region_name=region)
+rconpass = os.environ['rconpass']
 
 
 def list_instances_by_tag_value(tagkey, tagvalue):
@@ -33,7 +33,7 @@ def runCommand(instance_id, cmd):
         DocumentName='AWS-RunShellScript',
         Parameters={
             'commands': [
-                "mcrcon -H 127.0.0.1 -p test save-all"
+                f"mcrcon -H 127.0.0.1 -p {rconpass} save-all"
             ]
         }
     )
