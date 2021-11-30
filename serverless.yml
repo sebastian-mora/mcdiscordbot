@@ -112,7 +112,7 @@ functions:
       include:
         - functions/sendDiscordMessage/**
     environment:
-      webhook: ${ssm:disscord-webhook}
+      webhook: ${ssm:/mc/disscord-webhook}
 
   # Function to check account total per month.
   # Triggered by cloudwatch
@@ -145,7 +145,7 @@ functions:
           method: post
           private: True
     environment:
-      rconpass: ${ssm:rconpass}
+      rconpass: ${ssm:/mc/rconpass}
     package:
       include:
         - functions/mccommand/**
