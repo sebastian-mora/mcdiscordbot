@@ -13,5 +13,5 @@ EC2_NAME=$(aws ec2 describe-tags --region us-west-2 --filters "Name=resource-id,
 filename=mc.$EC2_NAME.zip
 
 zip -r /home/ubuntu/server/$filename /home/ubuntu/server/world
-aws s3 mv /home/ubuntu/server/$filename s3://$BUCKET/worlds
+aws s3 mv /home/ubuntu/server/$filename s3://$BUCKET/worlds/
 rm /home/ubuntu/server/$filename
