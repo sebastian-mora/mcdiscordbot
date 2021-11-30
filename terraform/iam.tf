@@ -92,3 +92,8 @@ resource "aws_iam_role_policy" "test_policy" {
 }
 EOF
 }
+
+resource "aws_iam_role_policy_attachment" "ssm-policy" {
+    role       = aws_iam_role.role.name
+    policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}

@@ -23,7 +23,7 @@ aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
 # Install Rcon
 wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz
-tar -xvf /home/ubuntu/server/rcon.tar.gz
+tar -xvf /home/ubuntu/server/rcon.tar.gz -C /usr/local/bin
 
 # Check if there is no world file
 FILE=/home/ubuntu/server/world
