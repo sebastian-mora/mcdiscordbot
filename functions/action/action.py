@@ -20,7 +20,8 @@ def list_instances_by_tag_value(tagkey, tagvalue):
     instancelist = []
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
-            instancelist.append(instance["InstanceId"])
+            if instance['State']['Name'] in ['stopped', 'running']:
+                instancelist.append(instance["InstanceId"])
     return instancelist
 
 def handler(event, context):

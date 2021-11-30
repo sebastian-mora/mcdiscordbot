@@ -19,7 +19,8 @@ def list_instances_by_tag(tagkey):
     server_list = []
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
-            server_list.append(parse_instance_metadata(instance))
+            if instance['State']['Name'] in ['stopped', 'running']:
+                server_list.append(parse_instance_metadata(instance))
 
     return server_list
 
@@ -55,3 +56,5 @@ def handler(event, context):
           "statusCode": 500,
           "body": json.dumps(str(e))
         }
+
+print(handler(1,1))
