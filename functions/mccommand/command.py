@@ -1,63 +1,77 @@
 import json
 import boto3
-from mcrcon import MCRcon
 import os
+import time
 
+# region = os.environ['region']
+region='us-west-2'
+ec2 = boto3.client('ec2', region_name=region)
 
-def list_instances_by_tag(tagkey):
-    # When passed a tag key, tag value this will return a list of InstanceIds that were found.
+def list_instances_by_tag_value(tagkey, tagvalue):
 
-    ec2client = boto3.client('ec2')
-
-    response = ec2client.describe_instances(
+    response = ec2.describe_instances(
         Filters=[
             {
-                'Name': 'tag-key',
-                'Values': [tagkey]
+                'Name': 'tag:'+tagkey,
+                'Values': [tagvalue]
             }
         ]
     )
-    server_list = []
+    instancelist = []
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
-            server_list.append(instance)
+            if instance['State']['Name'] in ['stopped', 'running']:
+                instancelist.append(instance["InstanceId"])
+    return instancelist
 
-    return server_list
+def runCommand(instance_id, cmd):
+    client = boto3.client('ssm')
+    response = client.send_command(
+        InstanceIds=[instance_id],
+        DocumentName='AWS-RunShellScript',
+        Parameters={
+            'commands': [
+                "mcrcon -H 127.0.0.1 -p test list "
+            ]
+        }
+    )
+    command_id = response['Command']['CommandId']
+    tries = 0
+    output = ''
+    while tries < 10:
+        tries = tries + 1
+        try:
+            time.sleep(0.5)  # some delay always required...
+            result = client.get_command_invocation(
+                CommandId=command_id,
+                InstanceId=instance_id,
+            )
+            print(result)
+            if result['Status'] == 'InProgress':
+                continue
+            output = result['StandardOutputContent']
+            break
+        except client.exceptions.InvocationDoesNotExist:
+            continue
 
-def findServerIp(server_name):
-  servers = list_instances_by_tag("Minecraft")
-  ip = ""
-  for server in servers:
+    return output 
 
-    for tag in server['Tags']:
 
-      if tag['Key'] == 'Name' and tag['Value'] == server_name:
-        ip = server['PublicIpAddress']
-        
-  return ip
-
-def runCommand(ip, cmd):
-  password = os.environ['rconpass']
-  with MCRcon(ip, password) as mcr:
-    resp = mcr.command(cmd)
-    return resp
-  return "failed to connect to server"
 
 
 def handler(event, context):
   
   try:
-      body = json.loads(event['body'])
-      cmd = body['cmd']
-      server_name = body['servername']
+      # body = json.loads(event['body'])
+      # cmd = body['cmd']
+      # server_name = body['servername']
 
-      # cmd = '/list'
-      # server_name = 'modded'
-      
-      ip = findServerIp(server_name)
+      cmd='list'
+      server_name='Vanilla-New'
 
-      if ip:
-        res = runCommand(ip, cmd)
+      instances = list_instances_by_tag_value("Name", server_name)
+      if len(instances) > 0:
+        res = runCommand(instances[0], cmd)
         return {
           'statusCode': 200,
           "headers": {
