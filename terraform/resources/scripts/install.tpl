@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt install -y unzip openjdk-17-jdk wget jq zip
+apt install -y unzip openjdk-17-jdk wget jq zip git
 
 # Install aws cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -21,6 +21,9 @@ chmod +x /home/ubuntu/server/server.jar
 # Pull scripts
 aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
+# Install Rcon
+wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz
+tar -xvf /home/ubuntu/server/rcon.tar.gz
 
 # Check if there is no world file
 FILE=/home/ubuntu/server/world
@@ -64,3 +67,4 @@ rm crontab_new
 chown -R ubuntu /home/ubuntu/server
 chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
+chmod +x /home/ubuntu/server/rcon
