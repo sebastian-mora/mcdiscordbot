@@ -1,7 +1,7 @@
 #!/bin/bash
 
 get_param() {
-    P=$(aws ssm get-parameter --name "$1" | jq -r '.Parameter.Value')
+    P=$(aws ssm get-parameter --with-decryption --name  "$1" | jq -r '.Parameter.Value')
     echo "$P"
 }
 
