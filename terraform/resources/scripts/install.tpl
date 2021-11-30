@@ -27,7 +27,7 @@ FILE=/home/ubuntu/server/world
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
-    aws s3 cp s3://$BUCKET/backup/mc.$EC2_NAME.zip /home/ubuntu/server/$filename 
+    aws s3 cp s3://${bucket}/backup/mc.$EC2_NAME.zip /home/ubuntu/server/$filename 
     unzip /home/ubuntu/server/$filename  -d /home/ubuntu/server
 fi
 
@@ -61,6 +61,6 @@ crontab crontab_new
 rm crontab_new
 
 # Update owner of folders
-chown ubuntu /home/ubuntu/server
-chown ubuntu /home/ubuntu/scripts
-chmod +x /home/ubuntu/scripts
+chown -R ubuntu /home/ubuntu/server
+chown -R ubuntu /home/ubuntu/scripts
+chmod -R +x /home/ubuntu/scripts
