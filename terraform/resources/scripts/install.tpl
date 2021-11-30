@@ -42,6 +42,7 @@ After=network.target
 WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
+ExecStartPost=/bin/sh -c "/home/ubuntu/script/alert.sh"
 
 EOF
 
@@ -55,7 +56,6 @@ cat << EOF >> crontab_new
 15 * * * * sh sh /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
 15 * * * * sh sh /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
 1 * * * * sh sh /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
-@reboot sh /home/ubuntu/scripts/alert.sh
 EOF
 crontab crontab_new
 rm crontab_new
