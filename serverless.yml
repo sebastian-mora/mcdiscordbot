@@ -112,7 +112,7 @@ functions:
       include:
         - functions/sendDiscordMessage/**
     environment:
-      webhook: ${ssm:/mc/disscord-webhook}
+      webhook: ${ssm:/mc/discord-webhook}
 
   # Function to check account total per month.
   # Triggered by cloudwatch
