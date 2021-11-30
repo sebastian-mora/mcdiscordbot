@@ -60,6 +60,8 @@ package:
   exclude:
     # Exclude everything first.
     - '**/*'
+  include:
+    - 'functions/shared/*'
 
 functions:
 
@@ -141,10 +143,7 @@ functions:
   managePlayerBilling:          
     handler: functions/managePlayerBilling/managePlayerBilling.handler
     events:
-      - http:
-          path: 
-          method: get
-          private: True
+      - schedule: rate(1 min)
     environment:
       rconpass: ${ssm:/mc/rconpass}
     package:
