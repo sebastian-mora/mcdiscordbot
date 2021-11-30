@@ -65,9 +65,18 @@ resource "aws_iam_role_policy" "test_policy" {
             "Effect": "Allow",
             "Action": "sns:Publish",
             "Resource": [
-                "arn:aws:sns:${data.aws_caller_identity.current.account_id}:${data.aws_region.current.name}:mcalerts"
+                "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:mcalerts"
             ]
+        },
+
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameters"
+            ],
+            "Resource": "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/mc/*"
         }
+
     ]
 }
 EOF
