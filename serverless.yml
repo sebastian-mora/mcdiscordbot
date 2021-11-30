@@ -27,14 +27,14 @@ provider:
           Action:
             - "sns:Publish"
           Resource: 
-            - "arn:aws:sns:us-west-2:621056530958:minecraft-alert"
+            - !Ref mcalerts
 
         - Effect: "Allow"
           Action:
             - "dynamodb:GetItem"
             - "dynamodb:Scan"
           Resource:
-            - "arn:aws:dynamodb:us-west-2:621056530958:table/minecraft_players"
+            - ${ssm:/mc/dynamodb-mc}
       
         - Effect: "Allow"
           Action:
