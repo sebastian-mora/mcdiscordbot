@@ -7,6 +7,10 @@ curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip
 unzip awscliv2.zip
 ./aws/install
 
+# Setup vars 
+AWS_INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+EC2_NAME=$(aws ec2 describe-tags --region us-west-2 --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
+
 # Download server
 mkdir /home/ubuntu/server
 mkdir /home/ubuntu/scripts
@@ -17,12 +21,15 @@ chmod +x /home/ubuntu/server/server.jar
 # Pull scripts
 aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
 
-# Pull latest world
 
-# Setup S3 Backup script
-export S3_BUCKET=${bucket}
-export BACKUP_LIMIT=3
-export SNS_TOPIC=${sns_topic}
+# Check if there is no world file
+FILE=/home/ubuntu/server/world
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    aws s3 cp s3://$BUCKET/backup/mc.$EC2_NAME.zip /home/ubuntu/server/$filename 
+    unzip /home/ubuntu/server/$filename  -d /home/ubuntu/server
+fi
 
 
 # Setup minecraft service
@@ -48,3 +55,9 @@ cat << EOF >> /etc/crontab
 1 * * * * sh sh /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
 @reboot sh /home/ubuntu/scripts/alert.sh
 EOF
+
+
+# Update owner of folders
+chown ubuntu /home/ubuntu/server
+chown ubuntu /home/ubuntu/scripts
+chmod +x /home/ubuntu/scripts
