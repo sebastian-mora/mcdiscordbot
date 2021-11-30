@@ -76,6 +76,7 @@ functions:
         - functions/action/**
     environment:
       region: us-west-2
+      rconpass: ${ssm:/mc/rconpass}
   # Function for using mcstatus to check if a mc server is running 
   getStatus:
     handler: functions/status/status.handler
