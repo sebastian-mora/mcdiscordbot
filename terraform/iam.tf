@@ -72,7 +72,7 @@ resource "aws_iam_role_policy" "test_policy" {
         {
             "Effect": "Allow",
             "Action": [
-                "ssm:GetParameters"
+                "ssm:GetParameter"
             ],
             "Resource": "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/mc/*"
         }
