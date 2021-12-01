@@ -38,8 +38,6 @@ else
     unzip /tmp/mc.$EC2_NAME.zip  -d /home/ubuntu/server
 fi
 
-# Setup DNS Record
-/home/ubuntu/scripts/dynamic-dns.sh
 
 # Setup minecraft service
 cat << EOF > /etc/systemd/system/minecraft@.service 
@@ -80,3 +78,5 @@ chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
 chmod +x /home/ubuntu/server/rcon
 
+# Setup DNS Record
+/home/ubuntu/scripts/dynamic-dns.sh
