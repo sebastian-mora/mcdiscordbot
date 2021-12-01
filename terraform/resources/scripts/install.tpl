@@ -26,12 +26,13 @@ wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/release
 tar -xvf /home/ubuntu/server/rcon.tar.gz -C /usr/local/bin
 
 # Check if there is no world file
-FILE=/home/ubuntu/server/world
-if [ -f "$FILE" ]; then
-    echo "$FILE exists."
-else 
-    aws s3 cp s3://${bucket}/backup/mc.$EC2_NAME.zip /home/ubuntu/server/$filename 
-    unzip /home/ubuntu/server/$filename  -d /home/ubuntu/server
+WORLD_DIR="/home/ubuntu/server/world"
+if [ -d "$WORLD_DIR" ]; then
+    echo "$WORLD_DIR exists."
+else
+    echo "Dowloading world backup"
+    aws s3 cp s3://${bucket}/backups/mc.$EC2_NAME.zip /tmp/$filename
+    unzip /tmp/$filename  -d /home/ubuntu/server
 fi
 
 
@@ -56,9 +57,9 @@ systemctl enable minecraft@survival
 # Setup Crontabs
 crontab -l > crontab_new 
 cat << EOF >> crontab_new 
-15 * * * * sh sh /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
-15 * * * * sh sh /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
-1 * * * * sh sh /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
+15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
+15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
+1  * * * * sh  /home/ubuntu/scripts/playertime.py >/dev/null 2>&1
 EOF
 crontab crontab_new
 rm crontab_new
