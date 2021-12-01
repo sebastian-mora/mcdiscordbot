@@ -60,6 +60,8 @@ package:
   exclude:
     # Exclude everything first.
     - '**/*'
+  include:
+    - 'functions/shared/*'
 
 functions:
 
@@ -127,16 +129,26 @@ functions:
         - functions/billingNotifiy/**
   
   # Allow users to read player billing 
-  playerBilling:          
-    handler: functions/playerBilling/playerBilling.handler
+  listPlayerBillinging:          
+    handler: functions/listPlayerBilling/listPlayerBilling.handler
     events:
       - http:
-          path: playerBilling
+          path: 
           method: get
           private: True
     package:
       include:
-        - functions/playerBilling/**
+        - functions/listPlayerBillinging/**
+  
+  managePlayerBilling:          
+    handler: functions/managePlayerBilling/managePlayerBilling.handler
+    events:
+      - schedule: rate(1 min)
+    environment:
+      rconpass: ${ssm:/mc/rconpass}
+    package:
+      include:
+        - functions/managePlayerBilling/**
 
   mcCommand:          
     handler: functions/mccommand/command.handler
