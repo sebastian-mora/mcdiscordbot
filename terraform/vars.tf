@@ -30,3 +30,9 @@ variable "domain_name" {
   description = "The name of a domain with an existing Hosted Zone within the account"
   default = "mc.rusecrew.com"
 }
+
+
+variable "domain_name_2" {
+  description = "The name of a domain with an existing Hosted Zone within the account"
+  default = "mc.rusecrew.com"
+}
