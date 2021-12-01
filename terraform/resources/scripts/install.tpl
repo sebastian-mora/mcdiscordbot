@@ -63,7 +63,7 @@ cat << EOF >> crontab_new
 15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
 15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
 EOF
-crontab crontab_new
+crontab -u ubuntu crontab_new
 rm crontab_new
 
 # Update owner of folders
