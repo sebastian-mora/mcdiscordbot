@@ -25,6 +25,12 @@ provider:
 
         - Effect: "Allow"
           Action:
+            - "ssm:SendCommand"
+          Resource: 
+            - "*"
+
+        - Effect: "Allow"
+          Action:
             - "sns:Publish"
           Resource: 
             - !Ref mcalerts
