@@ -19,7 +19,7 @@ echo "eula=true" > /home/ubuntu/server/eula.txt
 chmod +x /home/ubuntu/server/server.jar
 
 # Pull scripts
-aws s3 sync s3://${bucket}/ /home/ubuntu/scripts
+aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
 
 # Install Rcon
 wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz
@@ -31,8 +31,8 @@ if [ -d "$WORLD_DIR" ]; then
     echo "$WORLD_DIR exists."
 else
     echo "Dowloading world backup"
-    aws s3 cp s3://${bucket}/backups/mc.$EC2_NAME.zip /tmp/$filename
-    unzip /tmp/$filename  -d /home/ubuntu/server
+    aws s3 cp s3://${bucket}/worlds/mc.$EC2_NAME.zip /tmp/
+    unzip /tmp/mc.$EC2_NAME.zip  -d /home/ubuntu/server
 fi
 
 
