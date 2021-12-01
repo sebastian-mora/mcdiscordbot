@@ -23,6 +23,7 @@ resource "aws_s3_bucket_object" "upload-scripts" {
   etag     = filemd5("./resources/scripts/${each.value}")
 }
 
+
 resource "aws_s3_bucket_object" "upload-server-configs" {
   for_each = fileset("./resources/server-configs", "*")
   bucket   = aws_s3_bucket.mc-worlds.id
