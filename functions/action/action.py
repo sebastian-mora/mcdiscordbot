@@ -33,7 +33,7 @@ def runCommand(instance_id, cmd):
         DocumentName='AWS-RunShellScript',
         Parameters={
             'commands': [
-                f"mcrcon -H 127.0.0.1 -p {rconpass} save-all"
+                f"mcrcon -H 127.0.0.1 -p {rconpass} save-all stop"
             ]
         }
     )

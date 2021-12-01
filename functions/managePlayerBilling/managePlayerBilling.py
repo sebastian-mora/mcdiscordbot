@@ -132,5 +132,3 @@ def handler(event, context):
         "statusCode": 500,
         "body": json.dumps(str(e))
       }
-
-print(handler(1,1))

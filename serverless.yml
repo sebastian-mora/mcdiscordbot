@@ -60,8 +60,6 @@ package:
   exclude:
     # Exclude everything first.
     - '**/*'
-  include:
-    - 'functions/shared/*'
 
 functions:
 
@@ -129,21 +127,23 @@ functions:
         - functions/billingNotifiy/**
   
   # Allow users to read player billing 
-  listPlayerBillinging:          
+  playerBilling:          
     handler: functions/listPlayerBilling/listPlayerBilling.handler
     events:
       - http:
-          path: 
+          path: listPlayerBilling
           method: get
           private: True
     package:
       include:
-        - functions/listPlayerBillinging/**
-  
+        - functions/listPlayerBilling/**
+
+  # Function to bill active users on servers
+
   managePlayerBilling:          
     handler: functions/managePlayerBilling/managePlayerBilling.handler
     events:
-      - schedule: rate(1 minutes)
+      - schedule: rate(1 minute)
     package:
       include:
         - functions/managePlayerBilling/**
