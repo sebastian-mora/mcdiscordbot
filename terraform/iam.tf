@@ -96,9 +96,7 @@ resource "aws_iam_role_policy" "test_policy" {
          "Resource":[
             "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zone_id}"
          ]
-        },
-
-
+        }
     ]
 }
 EOF
