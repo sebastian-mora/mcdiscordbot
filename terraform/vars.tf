@@ -24,9 +24,9 @@ variable "rconpass" {
 
 variable "mc_server_url" {
   description = "JAR Url for mc version to download"
-  default = "https://serverjars.com/api/fetchJar/vanilla/1.18"
+  default     = "https://serverjars.com/api/fetchJar/vanilla/1.18"
 }
 variable "domain_name" {
   description = "The name of a domain with an existing Hosted Zone within the account"
-  default = "mc.rusecrew.com"
+  default     = "mc.rusecrew.com"
 }

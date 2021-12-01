@@ -22,19 +22,19 @@ resource "aws_ssm_parameter" "rconpass" {
 }
 
 resource "aws_ssm_parameter" "sns_topic" {
-  name = "/mc/alert-sns"
-  type = "SecureString"
+  name  = "/mc/alert-sns"
+  type  = "SecureString"
   value = "arn:aws:sns:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:mcalerts"
 }
 
 resource "aws_ssm_parameter" "backup-bucket" {
-  name = "/mc/backup-bucket"
-  type = "SecureString"
+  name  = "/mc/backup-bucket"
+  type  = "SecureString"
   value = aws_s3_bucket.mc-worlds.id
 }
 
 resource "aws_ssm_parameter" "backup-version-limit" {
-  name = "/mc/version-limit"
-  type = "SecureString"
+  name  = "/mc/version-limit"
+  type  = "SecureString"
   value = "3"
 }
