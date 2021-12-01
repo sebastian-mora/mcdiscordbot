@@ -47,7 +47,7 @@ After=network.target
 
 
 [Service]
-User=minecraft
+User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
