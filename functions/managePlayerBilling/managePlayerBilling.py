@@ -6,7 +6,7 @@ import os
 import re
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
-table = dynamodb.Table('mc-data')
+table = dynamodb.Table('mcdata')
 # rconpass = os.environ['rconpass']
 
 class DecimalEncoder(json.JSONEncoder):
@@ -71,6 +71,7 @@ def get_active_players(instance_id):
                 CommandId=command_id,
                 InstanceId=instance_id,
             )
+
             if result['Status'] == 'InProgress':
                 continue
             output = result['StandardOutputContent']
@@ -99,6 +100,7 @@ def update_player_cost(username, individual_cost):
   if response.get('Item'):
     player = response['Item']
     player['minutes'] = int(player['minutes'] + 1)
+    print(player['minutes'])
     player['cost'] = round(player['cost'] + Decimal(individual_cost), 4)
     table.put_item(Item=player)
     print("Updated player time")
@@ -113,7 +115,8 @@ def handler(event, context):
       for instance_id in running_servers:
           players = get_active_players(instance_id)
           for username in players:
-              update_player_cost(username, (.11 / (len(players))))
+              print(username)
+              update_player_cost(username,  ( (.11 / (len(players) )) /60) )
 
       return {
       'statusCode': 200,
@@ -129,3 +132,5 @@ def handler(event, context):
         "statusCode": 500,
         "body": json.dumps(str(e))
       }
+
+print(handler(1,1))
