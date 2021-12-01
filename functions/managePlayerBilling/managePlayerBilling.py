@@ -3,14 +3,15 @@ import boto3
 from decimal import Decimal
 import time
 import os
+import re
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('mc-data')
-rconpass = os.environ['rconpass']
+# rconpass = os.environ['rconpass']
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, D):
+        if isinstance(obj, Decimal):
             return float(obj)
         return json.JSONEncoder.default(self, obj)
 
@@ -43,7 +44,7 @@ def list_running_instances_by_tag(tagkey):
     server_list = []
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
-            if instance['State']['Name'] is 'running':
+            if instance['State']['Name'] == 'running':
                 server_list.append(instance["InstanceId"])
 
     return server_list
@@ -55,7 +56,7 @@ def get_active_players(instance_id):
         DocumentName='AWS-RunShellScript',
         Parameters={
             'commands': [
-                f"mcrcon -H 127.0.0.1 -p {rconpass} test \"list\" | cut -d \":\" -f 2 | sed 's/ //g' "
+                f"mcrcon -H 127.0.0.1 -p  test \"list\" | cut -d \":\" -f 2 | sed 's/ //g' "
             ]
         }
     )
@@ -70,7 +71,6 @@ def get_active_players(instance_id):
                 CommandId=command_id,
                 InstanceId=instance_id,
             )
-            print(result)
             if result['Status'] == 'InProgress':
                 continue
             output = result['StandardOutputContent']
