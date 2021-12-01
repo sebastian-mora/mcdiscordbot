@@ -30,7 +30,7 @@ resource "aws_instance" "mc1" {
   user_data                   = data.template_file.ec2_install_script_mc.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"        = "Vanilla-New"
+    "Name"        = "vanilla"
     "Description" = "Vanilla Minecraft Server"
     "Minecraft"   = true
   }
@@ -89,6 +89,6 @@ data "template_file" "ec2_install_script_mc" {
     vars = {
       bucket = aws_s3_bucket.mc-worlds.id
       url = var.mc_server_url
-      server_name = "Vanilla-New"
+      server_name = "vanilla"
     }
 }
