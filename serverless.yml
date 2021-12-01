@@ -143,9 +143,7 @@ functions:
   managePlayerBilling:          
     handler: functions/managePlayerBilling/managePlayerBilling.handler
     events:
-      - schedule: rate(1 min)
-    environment:
-      rconpass: ${ssm:/mc/rconpass}
+      - schedule: rate(1 minutes)
     package:
       include:
         - functions/managePlayerBilling/**
