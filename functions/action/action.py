@@ -33,7 +33,7 @@ def runCommand(instance_id, cmd):
         DocumentName='AWS-RunShellScript',
         Parameters={
             'commands': [
-                f"mcrcon -H 127.0.0.1 -p {rconpass} save-all stop"
+                f"mcrcon -H 127.0.0.1 -p test save-all stop"
             ]
         }
     )
@@ -86,7 +86,10 @@ def handler(event, context):
             "body": 'Starting server'
         }
     elif action == 'stop':
-        runCommand(instances[0], "")
+        try:
+            runCommand(instances[0], "")
+        except:
+            pass
         ec2.stop_instances(InstanceIds=instances)
         return {
             "statusCode": 200,
