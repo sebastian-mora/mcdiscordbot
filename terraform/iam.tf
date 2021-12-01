@@ -86,7 +86,18 @@ resource "aws_iam_role_policy" "test_policy" {
          "Resource":[
             "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:aws/ssm"
          ]
-      }
+        },
+
+        {
+         "Effect":"Allow",
+         "Action":[
+            "route53:ChangeResourceRecordSets"
+         ],
+         "Resource":[
+            "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zoneid}"
+         ]
+        },
+
 
     ]
 }
