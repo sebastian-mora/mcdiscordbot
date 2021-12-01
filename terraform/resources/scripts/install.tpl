@@ -45,11 +45,16 @@ cat << EOF > /etc/systemd/system/minecraft@.service
 Description=Minecraft Server
 After=network.target
 
+
 [Service]
+User=minecraft
 WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
 ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+
+[Install]
+WantedBy=multi-user.target
 
 EOF
 
