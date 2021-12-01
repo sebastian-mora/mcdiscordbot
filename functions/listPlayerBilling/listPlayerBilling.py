@@ -3,7 +3,7 @@ import boto3
 from decimal import Decimal as D
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
-table = dynamodb.Table('minecraft_players')
+table = dynamodb.Table('mcdata')
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
