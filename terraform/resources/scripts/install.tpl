@@ -38,6 +38,8 @@ else
     unzip /tmp/mc.$EC2_NAME.zip  -d /home/ubuntu/server
 fi
 
+# Setup DNS Record
+/home/ubuntu/scripts/dynamic-dns.sh
 
 # Setup minecraft service
 cat << EOF > /etc/systemd/system/minecraft@.service 
@@ -67,6 +69,7 @@ crontab -l > crontab_new
 cat << EOF >> crontab_new 
 15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
 15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
+@reboot    sh  /home/ubuntu/scripts/dynamic-dns.sh >/dev/null 2>&1
 EOF
 crontab -u ubuntu crontab_new
 rm crontab_new
@@ -77,5 +80,3 @@ chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
 chmod +x /home/ubuntu/server/rcon
 
-# Move DNS to startup folder
-cp /home/ubuntu/scripts/dynamic-dns.sh /var/lib/cloud/scripts/per-boot/
