@@ -89,5 +89,6 @@ data "template_file" "ec2_install_script_mc" {
     vars = {
       bucket = aws_s3_bucket.mc-worlds.id
       url = var.mc_server_url
+      server_name = "Vanilla-New"
     }
 }
