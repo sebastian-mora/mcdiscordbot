@@ -94,7 +94,7 @@ resource "aws_iam_role_policy" "test_policy" {
             "route53:ChangeResourceRecordSets"
          ],
          "Resource":[
-            "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zoneid}"
+            "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zone_id}"
          ]
         },
 
