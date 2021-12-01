@@ -76,3 +76,6 @@ chown -R ubuntu /home/ubuntu/server
 chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
 chmod +x /home/ubuntu/server/rcon
+
+# Move DNS to startup folder
+cp /home/ubuntu/scripts/dynamic-dns.sh /var/lib/cloud/scripts/per-boot/
