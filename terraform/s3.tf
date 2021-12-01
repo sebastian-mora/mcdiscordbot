@@ -24,7 +24,7 @@ resource "aws_s3_bucket_object" "upload-scripts" {
 }
 
 resource "aws_s3_bucket_object" "upload-configs" {
-  for_each = fileset("./resources/server-configs", "*")
+  for_each = fileset("./resources/server-configs", "**/*")
   bucket   = aws_s3_bucket.mc-worlds.id
   key      = "/server-configs/${each.value}"
   source   = "./resources/server-configs/${each.value}"
