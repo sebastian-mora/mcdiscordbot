@@ -22,7 +22,7 @@ chmod +x /home/ubuntu/server/server.jar
 aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
 
 # Pull server config
-aws s3 cp s3://${bucket}/server-configs/{server_name}}/server.properties /home/ubuntu/server/
+aws s3 cp s3://${bucket}/server-configs/${server_name}/server.properties /home/ubuntu/server/
 
 # Install Rcon
 wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz
