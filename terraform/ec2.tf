@@ -34,7 +34,7 @@ resource "aws_instance" "mc1" {
     "Description" = "Vanilla Minecraft Server"
     "Minecraft"   = true
     "AUTO_DNS_ZONE"= data.aws_route53_zone.primary.zoneid
-    "AUTO_DNS_NAME"= data.aws_route53_zone.primary.zoneid
+    "AUTO_DNS_NAME"= "vanilla.mc.rusecrew.com"
 
   }
 }
