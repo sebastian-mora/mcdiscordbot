@@ -13,6 +13,7 @@ if [ "$PLAYERCOUNT" -eq "0" ]; then
 	/usr/local/bin/mcrcon -p test "say Stoping the server...." stop
 
 	/usr/local/bin/aws sns publish --region ${AZ::-1} --topic-arn "${SNS_TOPIC}" --message "Shutting down ${EC2_NAME} due to inactivity."
+
 	sudo shutdown -h now
 	echo "Shutting down ${EC2_NAME} due to inactivity."
 else
