@@ -6,8 +6,11 @@ echo "Player count: $PLAYERCOUNT"
 SNS_TOPIC=$(/usr/local/bin/aws ssm get-parameter --name "/mc/alert-sns" --with-decryption --region us-west-2  | jq -r '.Parameter.Value')
 
 if [ "$PLAYERCOUNT" -eq "0" ]; then
+	
+	# Run save and backup
+	/home/ubuntu/scripts/backup-world.sh
+	/usr/local/bin/mcrcon -p test "say Stoping the server...." stop
 
-	sudo systemctl stop minecraft.service
 	/usr/local/bin/aws sns publish --region us-west-2 --topic-arn "${SNS_TOPIC}" --message "Shutting down ${EC2_NAME} due to inactivity."
 	sudo shutdown -h now
 	echo "Shutting down ${EC2_NAME} due to inactivity."
