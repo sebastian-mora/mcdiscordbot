@@ -8,8 +8,9 @@ unzip awscliv2.zip
 ./aws/install
 
 # Setup vars 
+AZ=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone/)
 AWS_INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-EC2_NAME=$(aws ec2 describe-tags --region us-west-2 --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
+EC2_NAME=$(aws ec2 describe-tags --region ${AZ::-1} --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
 
 # Download server
 mkdir /home/ubuntu/server
