@@ -58,9 +58,9 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 StartLimitBurst=3
 #Restart=always
-ExecStart=/usr/bin/screen -DmS mc-%i bin/sh -c "/home/ubuntu/server/startserver.sh"
+ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh -c "/home/ubuntu/server/startserver.sh"
 
-#ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
 
 [Install]
