@@ -26,7 +26,7 @@ resource "aws_instance" "mc1" {
   key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-  vpc_security_group_ids             = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+  vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
   user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
@@ -45,7 +45,7 @@ resource "aws_instance" "mc2" {
   key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-  vpc_security_group_ids =               [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+  vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
   user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
