@@ -66,9 +66,9 @@ systemctl enable minecraft@survival
 # Setup Crontabs
 crontab -l > crontab_new 
 cat << EOF >> crontab_new 
-15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >/dev/null 2>&1
-15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >/dev/null 2>&1
-@reboot    sh  /home/ubuntu/scripts/dynamic-dns.sh >/dev/null 2>&1
+15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >> /var/log/cron.log 2>&1
+15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >> /var/log/cron.log  2>&1
+@reboot    sh  /home/ubuntu/scripts/dynamic-dns.sh >> /var/log/cron.log 2>&1
 EOF
 crontab -u ubuntu crontab_new
 rm crontab_new
