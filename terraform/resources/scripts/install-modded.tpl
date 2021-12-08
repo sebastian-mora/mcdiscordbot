@@ -51,7 +51,7 @@ After=network.target
 User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 Restart=always
-ExecStart=/usr/bin/screen -DmS mc-%i /usr/bin/java -Xmx4G -jar /home/ubuntu/server/server.jar nogui
+ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh /home/ubuntu/server/startserver.sh
 ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
 [Install]
