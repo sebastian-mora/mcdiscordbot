@@ -27,7 +27,7 @@ resource "aws_instance" "mc1" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   security_groups             = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
-  user_data                   = data.template_file.ec2_install_script_mc.rendered
+  user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
     "Name"          = "vanilla"
@@ -38,6 +38,26 @@ resource "aws_instance" "mc1" {
 
   }
 }
+
+resource "aws_instance" "mc2" {
+  ami                         = data.aws_ami.ubuntu.id
+  instance_type               = "m5.large"
+  key_name                    = aws_key_pair.deployer.key_name
+  subnet_id                   = module.vpc.public_subnets[0]
+  associate_public_ip_address = true
+  security_groups             = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+  user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
+  iam_instance_profile        = aws_iam_instance_profile.test_profile.name
+  tags = {
+    "Name"          = "modded"
+    "Description"   = "Modded Minecraft Server"
+    "Minecraft"     = true
+    "AUTO_DNS_ZONE" = data.aws_route53_zone.primary.zone_id
+    "AUTO_DNS_NAME" = "modded.mc.rusecrew.com"
+
+  }
+}
+
 
 
 resource "aws_security_group" "mc-sg" {
@@ -87,11 +107,20 @@ resource "aws_security_group" "allow-ssh-public" {
 
 }
 
-data "template_file" "ec2_install_script_mc" {
-  template = file("./resources/scripts/install.tpl")
+data "template_file" "ec2_install_script_mc_vanilla" {
+  template = file("./resources/scripts/install-vanilla.tpl")
   vars = {
     bucket      = aws_s3_bucket.mc-worlds.id
     url         = var.mc_server_url
+    server_name = "vanilla"
+  }
+}
+
+data "template_file" "ec2_install_script_mc_mod" {
+  template = file("./resources/scripts/install-modded.tpl")
+  vars = {
+    bucket      = aws_s3_bucket.mc-worlds.id
+    url         = "https://edge.forgecdn.net/files/3553/975/SIMPLE-SERVER-FILES-0.1.6.zip"
     server_name = "vanilla"
   }
 }
