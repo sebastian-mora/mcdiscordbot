@@ -17,7 +17,10 @@ mkdir /home/ubuntu/server
 mkdir /home/ubuntu/scripts
 wget -O /tmp/server.zip ${url}
 unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
-chmod +x /home/ubuntu/server/startserver.sh
+# Update install basepath 
+sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' server-setup-config.yaml
+
+# chmod +x /home/ubuntu/server/startserver.sh
 
 # Pull scripts
 aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
@@ -52,7 +55,7 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh /home/ubuntu/server/startserver.sh
-ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+# ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
 [Install]
 WantedBy=multi-user.target
