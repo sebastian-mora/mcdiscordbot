@@ -15,6 +15,7 @@ EC2_NAME=$(aws ec2 describe-tags --region us-west-2 --filters "Name=resource-id,
 # Download server
 mkdir /home/ubuntu/server
 mkdir /home/ubuntu/scripts
+
 wget -O /tmp/server.zip ${url}
 unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
 ## Update install basepath 
@@ -22,6 +23,7 @@ sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' server-setup-config.
 echo "eula=true" > /home/ubuntu/server/eula.txt
 
 # chmod +x /home/ubuntu/server/startserver.sh
+
 
 # Pull scripts
 aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
@@ -56,7 +58,9 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh /home/ubuntu/server/startserver.sh
+
 # ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+
 
 [Install]
 WantedBy=multi-user.target
