@@ -19,7 +19,7 @@ mkdir /home/ubuntu/scripts
 wget -O /tmp/server.zip ${url}
 unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
 ## Update install basepath 
-sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' server-setup-config.yaml
+sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' /home/ubuntu/server/server-setup-config.yaml
 echo "eula=true" > /home/ubuntu/server/eula.txt
 
 # chmod +x /home/ubuntu/server/startserver.sh
