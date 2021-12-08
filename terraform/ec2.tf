@@ -46,7 +46,7 @@ resource "aws_instance" "mc2" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   security_groups             = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
-  user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
+  user_data                   = data.template_file.ec2_install_script_mod_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
     "Name"          = "modded"
@@ -112,6 +112,15 @@ data "template_file" "ec2_install_script_mc_vanilla" {
   vars = {
     bucket      = aws_s3_bucket.mc-worlds.id
     url         = var.mc_server_url
+    server_name = "vanilla"
+  }
+}
+
+data "template_file" "ec2_install_script_mc_mod" {
+  template = file("./resources/scripts/install-modded.tpl")
+  vars = {
+    bucket      = aws_s3_bucket.mc-worlds.id
+    url         = ""
     server_name = "vanilla"
   }
 }
