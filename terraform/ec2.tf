@@ -120,7 +120,7 @@ data "template_file" "ec2_install_script_mc_mod" {
   template = file("./resources/scripts/install-modded.tpl")
   vars = {
     bucket      = aws_s3_bucket.mc-worlds.id
-    url         = ""
+    url         = "https://edge.forgecdn.net/files/3553/975/SIMPLE-SERVER-FILES-0.1.6.zip"
     server_name = "vanilla"
   }
 }
