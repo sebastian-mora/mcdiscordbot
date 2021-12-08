@@ -21,7 +21,7 @@ unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
 
 ## Update install basepath 
 sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' /home/ubuntu/server/server-setup-config.yaml
-echo "eula=true" > /home/ubuntu/server/eula.txtS
+echo "eula=true" > /home/ubuntu/server/eula.txt
 chmod +x /home/ubuntu/server/startserver.sh
 
 
@@ -58,7 +58,7 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 StartLimitBurst=3
 #Restart=always
-ExecStart=/usr/bin/screen -DmS mc-%i /home/ubuntu/server/startserver.sh
+ExecStart=/usr/bin/screen -DmS mc-%i bin/sh -c "/home/ubuntu/server/startserver.sh"
 
 #ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
