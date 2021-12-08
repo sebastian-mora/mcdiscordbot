@@ -15,9 +15,9 @@ EC2_NAME=$(aws ec2 describe-tags --region us-west-2 --filters "Name=resource-id,
 # Download server
 mkdir /home/ubuntu/server
 mkdir /home/ubuntu/scripts
-wget -O /home/ubuntu/server/server.jar ${url}
-echo "eula=true" > /home/ubuntu/server/eula.txt
-chmod +x /home/ubuntu/server/server.jar
+wget -O /tmp/server.zip ${url}
+unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
+chmod +x /home/ubuntu/server/startserver.sh
 
 # Pull scripts
 aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
