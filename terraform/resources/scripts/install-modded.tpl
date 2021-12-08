@@ -1,6 +1,6 @@
 #!/bin/bash
 apt-get update
-apt install -y unzip openjdk-17-jdk wget jq zip git
+apt install -y unzip openjdk-8-jdk wget jq zip git
 
 # Install aws cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -18,11 +18,11 @@ mkdir /home/ubuntu/scripts
 
 wget -O /tmp/server.zip ${url}
 unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
+
 ## Update install basepath 
 sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' /home/ubuntu/server/server-setup-config.yaml
-echo "eula=true" > /home/ubuntu/server/eula.txt
-
-# chmod +x /home/ubuntu/server/startserver.sh
+echo "eula=true" > /home/ubuntu/server/eula.txtS
+chmod +x /home/ubuntu/server/startserver.sh
 
 
 # Pull scripts
@@ -56,10 +56,11 @@ After=network.target
 [Service]
 User=ubuntu
 WorkingDirectory=/home/ubuntu/server
-Restart=always
+StartLimitBurst=3
+#Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh /home/ubuntu/server/startserver.sh
 
-ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+#ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
 
 [Install]

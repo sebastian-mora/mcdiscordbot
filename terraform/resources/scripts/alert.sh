@@ -9,5 +9,5 @@ SNS_TOPIC=$( /usr/local/bin/aws ssm get-parameter --name "/mc/alert-sns" --with-
 
 MESSAGE="IP: ${DNS} (${IP}) .... ${EC2_NAME} started!"
 
-/usr/local/bin/aws sns publish --region ${AZ::-1} --topic-arn "${SNS_TOPIC}" --message "${MESSAGE}"
+/usr/local/bin/aws sns publish --region $AZ --topic-arn "${SNS_TOPIC}" --message "${MESSAGE}"
 
