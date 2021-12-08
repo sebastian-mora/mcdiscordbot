@@ -28,6 +28,13 @@ chmod +x /home/ubuntu/server/startserver.sh
 # Pull scripts
 aws s3 sync s3://${bucket}/scripts/ /home/ubuntu/scripts
 
+
+# Update owner of folders
+chown -R ubuntu /home/ubuntu/server
+chown -R ubuntu /home/ubuntu/scripts
+chmod -R +x /home/ubuntu/scripts
+chmod +x /home/ubuntu/server/rcon
+
 # Pull server config
 aws s3 cp s3://${bucket}/server-configs/${server_name}/server.properties /home/ubuntu/server/
 
