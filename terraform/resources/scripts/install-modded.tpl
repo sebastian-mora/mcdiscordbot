@@ -59,7 +59,7 @@ WorkingDirectory=/home/ubuntu/server
 Restart=always
 ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh /home/ubuntu/server/startserver.sh
 
-# ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
 
 [Install]
