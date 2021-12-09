@@ -41,7 +41,7 @@ resource "aws_instance" "mc1" {
 
 resource "aws_instance" "mc2" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "m5.large"
+  instance_type               = "m5.xlarge"
   key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
