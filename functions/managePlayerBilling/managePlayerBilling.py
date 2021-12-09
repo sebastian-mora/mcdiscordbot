@@ -45,7 +45,7 @@ def list_running_instances_by_tag(tagkey):
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
             if instance['State']['Name'] == 'running':
-                server_list.append(instance["InstanceId"])
+                server_list.append((instance["InstanceId"], instance["InstanceType"]))
 
     return server_list
 
@@ -112,11 +112,15 @@ def handler(event, context):
   
   try:
       running_servers = list_running_instances_by_tag("Minecraft")
-      for instance_id in running_servers:
+      for (instance_id, instance_type) in running_servers:
           players = get_active_players(instance_id)
           for username in players:
-              print(username)
-              update_player_cost(username,  ( (.11 / (len(players) )) /60) )
+              cost = .11
+              if instance_type == 'm5.xlarge':
+                  cost = .21
+            
+              update_player_cost(username,  ( (cost / (len(players) )) /60) )
+              print(cost, username)
 
       return {
       'statusCode': 200,
@@ -132,3 +136,5 @@ def handler(event, context):
         "statusCode": 500,
         "body": json.dumps(str(e))
       }
+
+handler(1,1)
