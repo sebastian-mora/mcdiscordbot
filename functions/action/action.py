@@ -52,9 +52,10 @@ def handler(event, context):
     elif action == 'stop':
         try:
             mcrcon.runCommand(instances[0], "save-all stop")
+            ec2.stop_instances(InstanceIds=instances)
         except:
-            pass
-        ec2.stop_instances(InstanceIds=instances)
+            Response.InternalServerError500("Failed to save world...server will stay running.")
+        
         return Response.OK200('Stopping server').json()
     else:
         return Response.BadRequest400(f"Unknown command: {action}").json()
