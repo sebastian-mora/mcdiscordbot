@@ -1,12 +1,14 @@
+import json
 class Response():
   def __init__(self, status_code, body) -> None:
     self.status_code = status_code
     self.body = body
   
   def json(self):
+
     return {
         "statusCode": self.status_code,
-        "body": self.body
+        "body": json.dumps(self.body)
     }
 
 class OK200(Response):
@@ -17,3 +19,7 @@ class OK200(Response):
 class BadRequest400(Response):
     def __init__(self, body) -> None:
        super().__init__(400, body)
+
+class InternalServerError500(Response):
+    def __init__(self, body) -> None:
+       super().__init__(500, body)

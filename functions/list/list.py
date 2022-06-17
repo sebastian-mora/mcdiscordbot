@@ -2,6 +2,7 @@ import json
 import boto3
 import os
 
+from functions.shared import Response
 
 def list_instances_by_tag(tagkey):
     # When passed a tag key, tag value this will return a list of InstanceIds that were found.
@@ -42,19 +43,7 @@ def handler(event, context):
   
     try:
         servers = list_instances_by_tag("Minecraft")
-        return {
-        'statusCode': 200,
-        "headers": {
-                "Content-Type": "application/json",
-                'Access-Control-Allow-Origin': '*'
-            },
-        'body': json.dumps(servers)
-      }
+        return Response.OK200(servers).json()
 
     except Exception as e:
-        return {
-          "statusCode": 500,
-          "body": json.dumps(str(e))
-        }
-
-print(handler(1,1))
+        return Response.InternalServerError500(str(e)).json()
