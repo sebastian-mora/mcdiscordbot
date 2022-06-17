@@ -5,7 +5,9 @@ import time
 import os
 import re
 
+from functions.shared.McRcon import McRcon
 from functions.shared import Response
+
 
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('mcdata')
@@ -57,36 +59,10 @@ def list_running_instances_by_tag(tagkey):
 
 
 def get_active_players(instance_id):
-    client = boto3.client('ssm')
-    response = client.send_command(
-        InstanceIds=[instance_id],
-        DocumentName='AWS-RunShellScript',
-        Parameters={
-            'commands': [
-                f"mcrcon -H 127.0.0.1 -p  test \"list\" | cut -d \":\" -f 2 | sed 's/ //g' "
-            ]
-        }
-    )
-    command_id = response['Command']['CommandId']
-    tries = 0
-    output = ''
-    while tries < 10:
-        tries = tries + 1
-        try:
-            time.sleep(0.5)  # some delay always required...
-            result = client.get_command_invocation(
-                CommandId=command_id,
-                InstanceId=instance_id,
-            )
-
-            if result['Status'] == 'InProgress':
-                continue
-            output = result['StandardOutputContent']
-            users = output.split(",")
-            users = [re.sub('\x1b[^m]*m\n', '', user) for user in users]
-            break
-        except client.exceptions.InvocationDoesNotExist:
-            continue
+    mcrcon = McRcon('test')
+   
+    users = mcrcon.runCommand(instance_id, "\"list\" | cut -d \":\" -f 2 | sed 's/ //g'" ).split(",")
+    users = [re.sub('\x1b[^m]*m\n', '', user) for user in users]
 
     return users
 
