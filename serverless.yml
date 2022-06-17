@@ -151,19 +151,6 @@ functions:
       include:
         - functions/managePlayerBilling/**
 
-  mcCommand:          
-    handler: functions/mccommand/command.handler
-    events:
-      - http:
-          path: cmd
-          method: post
-          private: True
-    environment:
-      rconpass: ${ssm:/mc/rconpass}
-    package:
-      include:
-        - functions/mccommand/**
-
 resources:
   Resources:
     mcalerts:
