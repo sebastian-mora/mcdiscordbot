@@ -4,18 +4,26 @@ resource "random_string" "random" {
 }
 
 resource "aws_s3_bucket" "mc-worlds" {
-
   bucket = "mc-worlds-${lower(random_string.random.result)}"
-  acl    = "private"
-  versioning {
-    enabled = true
-  }
   tags = {
     Name = "Minecraft World Store"
   }
 }
 
-resource "aws_s3_bucket_object" "upload-scripts" {
+
+resource "aws_s3_bucket_acl" "acl" {
+  bucket = aws_s3_bucket.mc-worlds.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "versioning_configuration" {
+  bucket = aws_s3_bucket.mc-worlds.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
+resource "aws_s3_object" "upload-scripts" {
   for_each = fileset("./resources/scripts", "*")
   bucket   = aws_s3_bucket.mc-worlds.id
   key      = "/scripts/${each.value}"
@@ -23,7 +31,7 @@ resource "aws_s3_bucket_object" "upload-scripts" {
   etag     = filemd5("./resources/scripts/${each.value}")
 }
 
-resource "aws_s3_bucket_object" "upload-configs" {
+resource "aws_s3_object" "upload-configs" {
   for_each = fileset("./resources/server-configs", "**/*")
   bucket   = aws_s3_bucket.mc-worlds.id
   key      = "/server-configs/${each.value}"
