@@ -1,7 +1,10 @@
+import imp
 import json
 import boto3
 import os 
 import time 
+
+from shared import Response
 
 region = os.environ['region']
 ec2 = boto3.client('ec2', region_name=region)
@@ -69,34 +72,19 @@ def handler(event, context):
         instances = list_instances_by_tag_value("Name", name)
 
         if(len(instances) <= 0):
-            return {
-                "statusCode": 200,
-                "body": f"No servers found with name {name}"
-            }
+            return Response.OK200(f"No servers found with name {name}").json()
     except Exception as e:
-        return {
-            "statusCode": 403,
-            "body":str(e)
-        }
+        return Response.BadRequest400(str(e)).json()
 
     if action == 'start':
         ec2.start_instances(InstanceIds=instances)
-        return {
-            "statusCode": 200,
-            "body": 'Starting server'
-        }
+        return Response.OK200('Starting server').json()
     elif action == 'stop':
         try:
             runCommand(instances[0], "")
         except:
             pass
         ec2.stop_instances(InstanceIds=instances)
-        return {
-            "statusCode": 200,
-            "body": 'Stopping server'
-        }
+        return Response.OK200('Stopping server').json()
     else:
-        return {
-            "statusCode": 403,
-            "body": 'Unknown action.'
-        }
+        return Response.BadRequest400(f"Unknown command: {action}").json()
