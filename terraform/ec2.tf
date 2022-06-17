@@ -30,9 +30,9 @@ resource "aws_instance" "vanilla" {
   user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"          = "vanilla"
-    "Description"   = "Vanilla Minecraft Server"
-    "Minecraft"     = true
+    "Name"        = "vanilla"
+    "Description" = "Vanilla Minecraft Server"
+    "Minecraft"   = true
   }
 }
 
@@ -46,9 +46,9 @@ resource "aws_instance" "modded" {
   user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"          = "modded"
-    "Description"   = "Modded Minecraft Server"
-    "Minecraft"     = true
+    "Name"        = "modded"
+    "Description" = "Modded Minecraft Server"
+    "Minecraft"   = true
 
   }
 }
