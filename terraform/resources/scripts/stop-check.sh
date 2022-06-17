@@ -7,15 +7,15 @@ SNS_TOPIC=$(/usr/local/bin/aws ssm get-parameter --name "/mc/alert-sns" --with-d
 
 echo "Player count: $PLAYERCOUNT"
 if [ "$PLAYERCOUNT" -eq "0" ]; then
-	
-	# Run save and backup
-	/home/ubuntu/scripts/backup-world.sh
-	/usr/local/bin/mcrcon -p test "say Stoping the server...." stop
 
-	/usr/local/bin/aws sns publish --region $AZ --topic-arn "${SNS_TOPIC}" --message "Shutting down ${EC2_NAME} due to inactivity."
+        # Run save and backup
+        /home/ubuntu/scripts/backup-world.sh
+        /usr/local/bin/mcrcon -p test "say Stoping the server...." stop
 
-	sudo shutdown -h now
-	echo "Shutting down ${EC2_NAME} due to inactivity."
+        /usr/local/bin/aws sns publish --region $AZ --topic-arn "${SNS_TOPIC}" --message "Shutting down ${EC2_NAME} due to inactivity."
+
+        sudo shutdown -h now
+        echo "Shutting down ${EC2_NAME} due to inactivity."
 else
-	echo "No shuttoff ${EC2_NAME}"
+        echo "No shuttoff ${EC2_NAME}"
 fi
