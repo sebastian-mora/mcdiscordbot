@@ -63,6 +63,8 @@ package:
   exclude:
     # Exclude everything first.
     - '**/*'
+  include:
+    - functions/shared/**
 
 functions:
 
