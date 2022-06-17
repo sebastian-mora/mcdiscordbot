@@ -20,7 +20,7 @@ resource "aws_key_pair" "deployer" {
 }
 
 
-resource "aws_instance" "mc1" {
+resource "aws_instance" "vanilla" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m5.large"
   key_name                    = aws_key_pair.deployer.key_name
@@ -30,16 +30,13 @@ resource "aws_instance" "mc1" {
   user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"          = "vanilla"
-    "Description"   = "Vanilla Minecraft Server"
-    "Minecraft"     = true
-    "AUTO_DNS_ZONE" = data.aws_route53_zone.primary.zone_id
-    "AUTO_DNS_NAME" = "vanilla.mc.rusecrew.com"
-
+    "Name"        = "vanilla"
+    "Description" = "Vanilla Minecraft Server"
+    "Minecraft"   = true
   }
 }
 
-resource "aws_instance" "mc2" {
+resource "aws_instance" "modded" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m5.xlarge"
   key_name                    = aws_key_pair.deployer.key_name
@@ -49,11 +46,9 @@ resource "aws_instance" "mc2" {
   user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
-    "Name"          = "modded"
-    "Description"   = "Modded Minecraft Server"
-    "Minecraft"     = true
-    "AUTO_DNS_ZONE" = data.aws_route53_zone.primary.zone_id
-    "AUTO_DNS_NAME" = "modded.mc.rusecrew.com"
+    "Name"        = "modded"
+    "Description" = "Modded Minecraft Server"
+    "Minecraft"   = true
 
   }
 }
