@@ -4,7 +4,7 @@ import boto3
 import os 
 import time 
 
-from shared import Response
+from functions.shared import Response
 
 region = os.environ['region']
 ec2 = boto3.client('ec2', region_name=region)
