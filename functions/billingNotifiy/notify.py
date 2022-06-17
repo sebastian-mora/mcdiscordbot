@@ -1,8 +1,9 @@
 import json
 import boto3
 from datetime import date
-import datetime
 import calendar
+
+from functions.shared import Response
 
 def get_month_day_range(date):
     first_day = date.replace(day = 1)
@@ -41,7 +42,4 @@ def handler(event, context):
        TopicArn='arn:aws:sns:us-west-2:621056530958:minecraft-alert',
        Message=f'Total montly cost: {amount} '
      )
-    return {
-        'statusCode': 200,
-        'body': json.dumps(amount)
-    }
+    return Response.OK200(amount).json()
