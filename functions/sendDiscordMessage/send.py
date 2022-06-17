@@ -1,6 +1,6 @@
-import json
 import requests
 import os
+
 
 hook = os.environ['webhook']
 

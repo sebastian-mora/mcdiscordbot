@@ -1,8 +1,11 @@
+import imp
 import json
 import boto3
 import os
 from mcstatus import MinecraftServer
 import socket
+
+from functions.shared import Response
 
 def list_instances_by_tag(tagkey):
     # When passed a tag key, tag value this will return a list of InstanceIds that were found.
@@ -74,12 +77,5 @@ def handler(event, context):
         except Exception as e:
             print(e)
 
-    return {
-            'statusCode': 200,
-            "headers": {
-                    "Content-Type": "application/json",
-                    'Access-Control-Allow-Origin': '*'
-                },
-            'body': json.dumps(server_list)
-        } 
+    return Response.OK200(server_list).json()
 

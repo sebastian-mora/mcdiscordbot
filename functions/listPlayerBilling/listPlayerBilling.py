@@ -2,6 +2,8 @@ import json
 import boto3
 from decimal import Decimal as D
 
+from functions.shared import Response
+
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('mcdata')
 
@@ -34,18 +36,7 @@ def handler(event, context):
   
   try:
       player_data = getAllPlayers()
-      return {
-      'statusCode': 200,
-      "headers": {
-              "Content-Type": "application/json",
-              'Access-Control-Allow-Origin': '*'
-          },
-      'body': json.dumps(player_data, cls=DecimalEncoder)
-    }
+      return Response.OK200(json.dumps(player_data, cls=DecimalEncoder)).json()
 
   except Exception as e:
-      return {
-        "statusCode": 500,
-        "body": json.dumps(str(e))
-      }
-print(handler(1,1))
+      return Response.InternalServerError500(str(e))

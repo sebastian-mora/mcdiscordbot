@@ -5,9 +5,12 @@ import time
 import os
 import re
 
+from functions.shared import Response
+
 dynamodb = boto3.resource('dynamodb', region_name='us-west-2')
 table = dynamodb.Table('mcdata')
 # rconpass = os.environ['rconpass']
+
 
 class DecimalEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -15,18 +18,20 @@ class DecimalEncoder(json.JSONEncoder):
             return float(obj)
         return json.JSONEncoder.default(self, obj)
 
+
 def getPlayer(username):
-  response = table.get_item(Key={
-  'username': username
-  })
+    response = table.get_item(Key={
+        'username': username
+    })
 
-  # Cast dec to int
-  if response.get('Item'):
-    player = response['Item']
-    return player
+    # Cast dec to int
+    if response.get('Item'):
+        player = response['Item']
+        return player
 
-  else:
-    return False
+    else:
+        return False
+
 
 def list_running_instances_by_tag(tagkey):
     # When passed a tag key, tag value this will return a list of InstanceIds that were found.
@@ -45,9 +50,11 @@ def list_running_instances_by_tag(tagkey):
     for reservation in (response["Reservations"]):
         for instance in reservation["Instances"]:
             if instance['State']['Name'] == 'running':
-                server_list.append((instance["InstanceId"], instance["InstanceType"]))
+                server_list.append(
+                    (instance["InstanceId"], instance["InstanceType"]))
 
     return server_list
+
 
 def get_active_players(instance_id):
     client = boto3.client('ssm')
@@ -81,60 +88,51 @@ def get_active_players(instance_id):
         except client.exceptions.InvocationDoesNotExist:
             continue
 
-    return users 
+    return users
+
 
 def create_player(username):
-  player = {
-    "username": username,
-    "minutes": 0,
-    "cost": Decimal(0.0)
-  }
-  table.put_item(Item=player)
-  print(f"Creating new player: {username}")
+    player = {
+        "username": username,
+        "minutes": 0,
+        "cost": Decimal(0.0)
+    }
+    table.put_item(Item=player)
+    print(f"Creating new player: {username}")
+
 
 def update_player_cost(username, individual_cost):
-  response = table.get_item(Key={
-    'username': username
-  })
+    response = table.get_item(Key={
+        'username': username
+    })
 
-  if response.get('Item'):
-    player = response['Item']
-    player['minutes'] = int(player['minutes'] + 1)
-    print(player['minutes'])
-    player['cost'] = round(player['cost'] + Decimal(individual_cost), 4)
-    table.put_item(Item=player)
-    print("Updated player time")
-  
-  else:
-    create_player(username)
+    if response.get('Item'):
+        player = response['Item']
+        player['minutes'] = int(player['minutes'] + 1)
+        print(player['minutes'])
+        player['cost'] = round(player['cost'] + Decimal(individual_cost), 4)
+        table.put_item(Item=player)
+        print("Updated player time")
+
+    else:
+        create_player(username)
+
 
 def handler(event, context):
-  
-  try:
-      running_servers = list_running_instances_by_tag("Minecraft")
-      for (instance_id, instance_type) in running_servers:
-          players = get_active_players(instance_id)
-          for username in players:
-              cost = .11
-              if instance_type == 'm5.xlarge':
-                  cost = .21
-            
-              update_player_cost(username,  ( (cost / (len(players) )) /60) )
-              print(cost, username)
 
-      return {
-      'statusCode': 200,
-      "headers": {
-              "Content-Type": "application/json",
-              'Access-Control-Allow-Origin': '*'
-          },
-      'body': ""
-    }
+    try:
+        running_servers = list_running_instances_by_tag("Minecraft")
+        for (instance_id, instance_type) in running_servers:
+            players = get_active_players(instance_id)
+            for username in players:
+                cost = .11
+                if instance_type == 'm5.xlarge':
+                    cost = .21
 
-  except Exception as e:
-      return {
-        "statusCode": 500,
-        "body": json.dumps(str(e))
-      }
+                update_player_cost(username,  ((cost / (len(players))) / 60))
+                print(cost, username)
 
-handler(1,1)
+        return Response.OK200().json()
+
+    except Exception as e:
+        return Response.InternalServerError500(str(e))
