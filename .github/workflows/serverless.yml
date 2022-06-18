@@ -10,7 +10,7 @@ jobs:
   serverless-deploy:
     name: serverless-deploy
     runs-on: ubuntu-latest
-     defaults:
+    defaults:
       run:
         working-directory: ./serverless
     strategy:
