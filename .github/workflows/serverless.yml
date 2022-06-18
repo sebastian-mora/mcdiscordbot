@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./serverless
+        working-directory: serverless
     strategy:
       matrix:
         node-version: [14.x]
@@ -32,6 +32,7 @@ jobs:
     - run: npm ci
     - name: serverless deploy
       uses: serverless/github-action@master
+      working-directory: ./serverless
       with:
         args: deploy
       env:
