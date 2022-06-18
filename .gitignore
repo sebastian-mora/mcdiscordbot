@@ -1,6 +1,7 @@
-/.npmignore
-/.serverless
+/serverless/.npmignore
+/serverless/.serverless
+/serverless/node_modules
 /aws
-/node_modules
 *.tfvars
 .terraform*
+serverless/package-lock.json
