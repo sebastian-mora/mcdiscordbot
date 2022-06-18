@@ -83,17 +83,6 @@ functions:
     environment:
       region: us-west-2
       rconpass: ${ssm:/mc/rconpass}
-  # Function for using mcstatus to check if a mc server is running 
-  getStatus:
-    handler: functions/status/status.handler
-    events:
-      - http:
-          path: status
-          method: get
-          # private: True
-    package:
-      include:
-        - functions/status/**
 
   # Function for listing EC2 minecraft servers based on tags
   listServers:
