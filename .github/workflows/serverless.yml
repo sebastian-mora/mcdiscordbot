@@ -3,15 +3,16 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - 'terraform/**'
-      - '.github/**'
-      - ''
-
+    paths:
+      - 'serverless/**'
+      
 jobs:
-  deploy:
-    name: deploy
+  serverless-deploy:
+    name: serverless-deploy
     runs-on: ubuntu-latest
+     defaults:
+      run:
+        working-directory: ./serverless
     strategy:
       matrix:
         node-version: [14.x]
