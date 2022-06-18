@@ -10,6 +10,6 @@
   "license": "ISC",
   "devDependencies": {
     "serverless-add-api-key": "^4.2.0",
-    "serverless-python-requirements": "^5.2.0"
+    "serverless-python-requirements": "^5.4.0"
   }
 }
