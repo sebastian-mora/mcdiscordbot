@@ -4,4 +4,3 @@
 /aws
 *.tfvars
 .terraform*
-serverless/package-lock.json
