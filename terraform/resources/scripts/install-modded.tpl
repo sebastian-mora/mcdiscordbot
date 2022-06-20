@@ -20,7 +20,6 @@ wget -O /tmp/server.zip ${url}
 unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
 
 ## Update install basepath 
-sed -i 's/  baseInstallPath: setup\//  baseInstallPath: ~/' /home/ubuntu/server/server-setup-config.yaml
 echo "eula=true" > /home/ubuntu/server/eula.txt
 chmod +x /home/ubuntu/server/startserver.sh
 
@@ -84,7 +83,6 @@ crontab -l > crontab_new
 cat << EOF >> crontab_new 
 15 * * * * sh  /home/ubuntu/scripts/stop-check.sh >> /home/ubuntu/cron.log 2>&1
 15 * * * * sh  /home/ubuntu/scripts/backup-world.sh >> /home/ubuntu/cron.log  2>&1
-@reboot    sh  /home/ubuntu/scripts/dynamic-dns.sh >> /home/ubuntu/cron.log 2>&1
 EOF
 crontab -u ubuntu crontab_new
 rm crontab_new
@@ -95,5 +93,3 @@ chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
 chmod +x /home/ubuntu/server/rcon
 
-# Setup DNS Record
-/home/ubuntu/scripts/dynamic-dns.sh
