@@ -98,5 +98,4 @@ rm crontab_new
 chown -R ubuntu /home/ubuntu/server
 chown -R ubuntu /home/ubuntu/scripts
 chmod -R +x /home/ubuntu/scripts
-chmod +x /home/ubuntu/server/rcon
 
