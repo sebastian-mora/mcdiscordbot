@@ -1,4 +1,8 @@
 #!/bin/bash
+
+# Enable logging
+exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
+
 apt-get update
 apt install -y unzip openjdk-8-jdk wget jq zip git
 
@@ -24,7 +28,7 @@ mv /home/ubuntu/server/RAD-Serverpack-1.50/** /home/ubuntu/server/
 
 ## Update install basepath 
 echo "eula=true" > /home/ubuntu/server/eula.txt
-chmod +x /home/ubuntu/server/startserver.sh
+chmod +x /home/ubuntu/server/LaunchServer.sh
 
 
 # Pull scripts
@@ -67,7 +71,7 @@ User=ubuntu
 WorkingDirectory=/home/ubuntu/server
 StartLimitBurst=3
 #Restart=always
-ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh -c "/home/ubuntu/server/startserver.sh"
+ExecStart=/usr/bin/screen -DmS mc-%i /bin/sh -c "/home/ubuntu/server/LaunchServer.sh"
 
 ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
 
