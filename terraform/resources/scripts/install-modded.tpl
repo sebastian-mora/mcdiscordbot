@@ -17,7 +17,10 @@ mkdir /home/ubuntu/server
 mkdir /home/ubuntu/scripts
 
 wget -O /tmp/server.zip ${url}
-unzip -j  /tmp/server.zip   -d /home/ubuntu/server/
+unzip  /tmp/server.zip   -d /home/ubuntu/server/
+
+# Removes the top level dir
+mv /home/ubuntu/server/RAD-Serverpack-1.50/** /home/ubuntu/server/
 
 ## Update install basepath 
 echo "eula=true" > /home/ubuntu/server/eula.txt
