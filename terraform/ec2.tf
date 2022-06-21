@@ -14,16 +14,9 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "aws-dev"
-  public_key = file("resources/aws-dev.pub")
-}
-
-
 resource "aws_instance" "vanilla" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m5.large"
-  key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
@@ -39,7 +32,6 @@ resource "aws_instance" "vanilla" {
 resource "aws_instance" "modded" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m5.xlarge"
-  key_name                    = aws_key_pair.deployer.key_name
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
