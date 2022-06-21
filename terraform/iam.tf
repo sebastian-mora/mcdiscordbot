@@ -1,13 +1,13 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
-resource "aws_iam_instance_profile" "test_profile" {
-  name = "test_profile"
+resource "aws_iam_instance_profile" "minecraft_server" {
+  name = "minecraft_server_instance_profile"
   role = aws_iam_role.role.name
 }
 
 resource "aws_iam_role" "role" {
-  name = "test_role"
+  name = "minecraft_server"
   path = "/"
 
   assume_role_policy = <<EOF
@@ -28,8 +28,8 @@ EOF
 }
 
 
-resource "aws_iam_role_policy" "test_policy" {
-  name = "test_policy"
+resource "aws_iam_role_policy" "minecraft_server_policy" {
+  name = "minecraft_server_policy"
   role = aws_iam_role.role.id
 
   policy = <<EOF
@@ -85,16 +85,6 @@ resource "aws_iam_role_policy" "test_policy" {
          ],
          "Resource":[
             "arn:aws:kms:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:aws/ssm"
-         ]
-        },
-
-        {
-         "Effect":"Allow",
-         "Action":[
-            "route53:ChangeResourceRecordSets"
-         ],
-         "Resource":[
-            "arn:aws:route53:::hostedzone/${data.aws_route53_zone.primary.zone_id}"
          ]
         }
     ]
