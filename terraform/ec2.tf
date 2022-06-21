@@ -19,7 +19,7 @@ resource "aws_instance" "vanilla" {
   instance_type               = "m5.large"
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+  vpc_security_group_ids      = [aws_security_group.mc-sg.id]
   user_data                   = data.template_file.ec2_install_script_mc_vanilla.rendered
   iam_instance_profile        = aws_iam_instance_profile.minecraft_server.name
   tags = {
@@ -34,7 +34,7 @@ resource "aws_instance" "modded" {
   instance_type               = "m5.xlarge"
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+  vpc_security_group_ids      = [aws_security_group.mc-sg.id]
   user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
   iam_instance_profile        = aws_iam_instance_profile.minecraft_server.name
   tags = {
@@ -68,30 +68,6 @@ resource "aws_security_group" "mc-sg" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-}
-
-resource "aws_security_group" "allow-ssh-public" {
-  description = "Allow mc connections"
-  name        = "allow-ssh-public"
-  vpc_id      = module.vpc.vpc_id
-  ingress {
-    description      = "Allow SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
 }
 
 data "template_file" "ec2_install_script_mc_vanilla" {
