@@ -14,12 +14,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_key_pair" "deployer" {
-  key_name   = "aws-dev"
-  public_key = file("resources/aws-dev.pub")
-}
-
-
 resource "aws_instance" "vanilla" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "m5.large"
