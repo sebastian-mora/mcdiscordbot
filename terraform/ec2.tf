@@ -74,6 +74,7 @@ data "template_file" "ec2_install_script_mc_vanilla" {
   template = file("./resources/scripts/install-vanilla.tpl")
   vars = {
     bucket      = aws_s3_bucket.mc-worlds.id
+    rcon_release_url = var.rcon_release_url
     url         = var.mc_server_url
     server_name = "vanilla"
   }
@@ -83,6 +84,7 @@ data "template_file" "ec2_install_script_mc_mod" {
   template = file("./resources/scripts/install-modded.tpl")
   vars = {
     bucket      = aws_s3_bucket.mc-worlds.id
+    rcon_release_url = var.rcon_release_url
     url         = "https://edge.forgecdn.net/files/3836/58/RAD-Serverpack-1.50.zip"
     server_name = "modded"
   }

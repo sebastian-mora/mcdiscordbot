@@ -22,6 +22,11 @@ variable "rconpass" {
   sensitive = true
 }
 
+variable "rcon_release_url" {
+  type = string
+  default = "https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz"
+}
+
 variable "mc_server_url" {
   description = "JAR Url for mc version to download"
   default     = "https://serverjars.com/api/fetchJar/vanilla/1.19"

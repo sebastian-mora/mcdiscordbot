@@ -45,7 +45,7 @@ chmod +x /home/ubuntu/server/rcon
 aws s3 cp s3://${bucket}/server-configs/${server_name}/server.properties /home/ubuntu/server/
 
 # Install Rcon
-wget -O /home/ubuntu/server/rcon.tar.gz https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz
+wget -O /home/ubuntu/server/rcon.tar.gz ${rcon_release_url}
 tar -xvf /home/ubuntu/server/rcon.tar.gz -C /usr/local/bin
 
 # Check if there is no world file
