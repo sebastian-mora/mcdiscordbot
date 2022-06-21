@@ -36,7 +36,14 @@ def handler(event, context):
   
   try:
       player_data = getAllPlayers()
-      return Response.OK200(json.dumps(player_data, cls=DecimalEncoder)).json()
+      return {
+      'statusCode': 200,
+      "headers": {
+              "Content-Type": "application/json",
+              'Access-Control-Allow-Origin': '*'
+          },
+      'body': json.dumps(player_data, cls=DecimalEncoder)
+    }
 
   except Exception as e:
       return Response.InternalServerError500(str(e))
