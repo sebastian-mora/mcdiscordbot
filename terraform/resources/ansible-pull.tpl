@@ -18,6 +18,9 @@ unzip -q awscliv2.zip
 chown ubuntu /home/ubuntu/.ssh/id_rsa
 chmod 400 /home/ubuntu/.ssh/id_rsa
 
+# Get fingerprint for github.com 
+ssh-keyscan github.com >> ~/.ssh/known_hosts
 
-(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git  -i hosts  ansible/${ansible_host_name}.yml >> /var/logs/ansible-pull") | crontab -u ubuntu -
+
+(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git  -i hosts  ansible/${ansible_host_name}.yml -v >> /var/logs/ansible-pull") | crontab -u ubuntu -
 
