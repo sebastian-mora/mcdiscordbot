@@ -96,8 +96,6 @@
         ansible.builtin.debug:
           msg: 'Failed to pull or extract existing world save, does it exist?'
 
-
-
   - name: Download mcrcon tar
     ansible.builtin.uri:
       url: "{{mc_rcon_relase}}"
@@ -110,24 +108,13 @@
       remote_src: true
     become: true
   
-
-
-# WORLD_DIR="/home/ubuntu/server/world"
-# if [ -d "$WORLD_DIR" ]; then
-#     echo "$WORLD_DIR exists."
-# else
-#     echo "Dowloading world backup"
-#     aws s3 cp s3://${bucket}/worlds/mc.$EC2_NAME.zip /tmp/
-#     unzip /tmp/mc.$EC2_NAME.zip  -d /home/ubuntu/server
-# fi
-
   # Enable systemd service 
   - name: template file to remote host
     template:                 # Ansible template module
       src: "systemd.j2"      # This is template src i.e source location 
       dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
-    
     become: true
+
   - name: Just force systemd to reread configs (2.4 and above)
     ansible.builtin.systemd:
       daemon_reload: yes
@@ -144,12 +131,14 @@
   - name: Setup auto shutdown cron job
     ansible.builtin.cron:
       name: "auto shutdown"
-      minute: "0"
-      hour: "5,2"
+      minute: "10"
+      weekday: "*"
+      hour: "*"
       job: "/home/ubuntu/scripts/stop-check.sh >> /home/ubuntu/cron.log 2>&1"
   - name: Setup auto shutdown cron job
     ansible.builtin.cron:
       name: "billing player check"
-      minute: "0"
-      hour: "5,2"
+      minute: "10"
+      weekday: "*"
+      hour: "*"
       job: "/home/ubuntu/scripts/backup-world.sh >> /home/ubuntu/cron.log 2>&1"
