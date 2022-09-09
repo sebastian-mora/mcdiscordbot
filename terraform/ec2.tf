@@ -33,6 +33,7 @@ resource "aws_instance" "vanilla" {
     "Name"        = "vanilla"
     "Description" = "Vanilla Minecraft Server"
     "Minecraft"   = true
+    "Role"        = "vanilla"
   }
 }
 
@@ -43,12 +44,12 @@ resource "aws_instance" "modded" {
   subnet_id                   = module.vpc.public_subnets[0]
   associate_public_ip_address = true
   vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
-  user_data                   = data.template_file.ec2_install_script_mc_mod.rendered
   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
   tags = {
     "Name"        = "modded"
     "Description" = "Modded Minecraft Server"
     "Minecraft"   = true
+    "Role"        = "modded"
 
   }
 }
@@ -103,19 +104,8 @@ resource "aws_security_group" "allow-ssh-public" {
 }
 
 data "template_file" "ec2_install_script_mc_vanilla" {
-  template = file("./resources/scripts/install-vanilla.tpl")
+  template = file("./resources/ansible-pull.tpl")
   vars = {
-    bucket      = aws_s3_bucket.mc-worlds.id
-    url         = var.mc_server_url
-    server_name = "vanilla"
-  }
-}
-
-data "template_file" "ec2_install_script_mc_mod" {
-  template = file("./resources/scripts/install-modded.tpl")
-  vars = {
-    bucket      = aws_s3_bucket.mc-worlds.id
-    url         = "https://edge.forgecdn.net/files/3836/58/RAD-Serverpack-1.50.zip"
-    server_name = "modded"
+    ansible_host_name = "vanilla" // should match ansible/file.yml
   }
 }

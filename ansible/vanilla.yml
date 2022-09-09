@@ -1,0 +1,9 @@
+---
+- hosts: localhost
+  roles:
+    - common
+    - vanilla
+# - hosts: localhost
+#   roles: 
+#     - common
+#     - modded
