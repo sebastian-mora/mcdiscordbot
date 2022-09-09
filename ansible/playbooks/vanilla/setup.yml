@@ -77,9 +77,6 @@
   - name: Pull server config from S3
     ansible.builtin.shell: "aws s3 cp s3://{{s3_bucket}}/server-configs/vanilla/server.properties /home/ubuntu/server/"
 
-
-
-      
   - name: Pull existing world save (if exists)
     block:
 
