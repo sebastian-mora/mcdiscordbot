@@ -12,3 +12,15 @@
   ansible.builtin.copy:
     src: '../files/server.properties'
     dest: /home/ubuntu/server/
+
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Enable the minecraft server
+  ansible.builtin.systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+  become: true

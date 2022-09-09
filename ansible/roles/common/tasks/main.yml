@@ -69,26 +69,11 @@
       ansible.builtin.debug:
         msg: 'Failed to pull or extract existing world save, does it exist?'
 
-
-# Enable systemd service 
 - name: template file to remote host
   template:                 # Ansible template module
     src: "../files/systemd.j2"      # This is template src i.e source location 
     dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
   become: true
-
-- name: Just force systemd to reread configs (2.4 and above)
-  ansible.builtin.systemd:
-    daemon_reload: yes
-  become: true
-
-- name: Enable the minecraft server
-  ansible.builtin.systemd:
-    name: minecraft
-    state: started
-    enabled: yes
-  become: true
-
 
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:

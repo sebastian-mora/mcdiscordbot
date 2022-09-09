@@ -19,8 +19,8 @@ chown ubuntu /home/ubuntu/.ssh/ssh_deploy
 chmod 400 /home/ubuntu/.ssh/ssh_deploy
 
 # Get fingerprint for github.com 
-ssh-keyscan github.com >> ~/.ssh/known_hosts
+ssh-keyscan github.com >> /home/ubuntu/.ssh/known_hosts
 
 
-(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git --key-file ~/.ssh/ssh_deploy -i hosts  ansible/${ansible_host_name}.yml -v >> /var/logs/ansible-pull") | crontab -u ubuntu -
+(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git --key-file ~/.ssh/ssh_deploy -i hosts  ansible/${ansible_host_name}.yml -v >> ~/ansible-pull-logs") | crontab -u ubuntu -
 
