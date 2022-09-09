@@ -13,6 +13,12 @@
     src: '../files/server.properties'
     dest: /home/ubuntu/server/
 
+- name: template file to remote host
+  template:                 # Ansible template module
+    src: "../files/systemd.j2"      # This is template src i.e source location 
+    dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
+  become: true
+  
 - name: Just force systemd to reread configs (2.4 and above)
   ansible.builtin.systemd:
     daemon_reload: yes

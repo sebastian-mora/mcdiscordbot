@@ -69,12 +69,6 @@
       ansible.builtin.debug:
         msg: 'Failed to pull or extract existing world save, does it exist?'
 
-- name: template file to remote host
-  template:                 # Ansible template module
-    src: "../files/systemd.j2"      # This is template src i.e source location 
-    dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
-  become: true
-
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
     name: "auto shutdown"
