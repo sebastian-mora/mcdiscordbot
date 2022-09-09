@@ -104,7 +104,7 @@ resource "aws_security_group" "allow-ssh-public" {
 }
 
 data "template_file" "ec2_install_script_mc_vanilla" {
-  template = file("./resources/scripts/install-vanilla.tpl")
+  template = file("./resources/ansible-pull.tpl")
   vars = {
     ansible_host_name = "vanilla" // should match ansible/file.yml
   }
