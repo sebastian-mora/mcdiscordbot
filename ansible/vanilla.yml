@@ -1,5 +1,0 @@
----
-- hosts: _vanilla
-  roles:
-    - common
-    - vanilla
