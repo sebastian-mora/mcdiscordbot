@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt install -y ansible unzip
+apt install -y ansible unzip jq
 
 # Install aws cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
