@@ -1,11 +1,16 @@
 #!/bin/bash
 
 apt-get update
-apt install -y ansible unzip jq
+apt install -y ansible unzip jq software-properties-common
+
+add-apt-repository --yes --update ppa:ansible/ansible
+apt install ansible
+
+ansible-galaxy collection install amazon.aws
 
 # Install aws cli
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
+unzip -q awscliv2.zip
 ./aws/install
 
 # Save ssh key
