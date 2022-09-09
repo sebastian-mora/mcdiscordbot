@@ -19,5 +19,5 @@ chown ubuntu /home/ubuntu/.ssh/id_rsa
 chmod 400 /home/ubuntu/.ssh/id_rsa
 
 
-(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git  -i hosts  ansible/${ansible_host_name}.yml 2>&1") | crontab -u ubuntu -
+(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git  -i hosts  ansible/${ansible_host_name}.yml >> /var/logs/ansible-pull") | crontab -u ubuntu -
 
