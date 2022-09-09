@@ -1,0 +1,155 @@
+---
+- name: Install Vanilla Minecraft
+  hosts: minecraft
+  remote_user: ubuntu
+  vars:
+    s3_bucket: "{{ lookup('aws_ssm', '/mc/backup-bucket') }}"
+    server_name: "vanilla"
+    mc_rcon_relase: "https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64.tar.gz"
+
+  tasks:
+  - name: Install a list of packages
+    ansible.builtin.apt:
+      pkg:
+        - openjdk-17-jdk  
+        - jq 
+        - git
+        - unzip
+        - python3-pip
+      update_cache: yes
+    become: true 
+
+  - name: Install boto3 python package
+    ansible.builtin.pip:
+      name: boto3
+
+  - amazon.aws.ec2_metadata_facts:
+
+  - name: Retrieve all tags on an instance
+    amazon.aws.ec2_tag_info:
+      resource: "{{ansible_ec2_instance_id}}"
+      region: us-west-2
+    register: instance_tags
+
+  - name: Download AWS CLI Zip
+    ansible.builtin.get_url:
+      url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+      dest: /tmp
+  
+  - name: Unarchive AWS CLI
+    ansible.builtin.unarchive:
+      src: /tmp/awscli-exe-linux-x86_64.zip
+      dest: /tmp
+      remote_src: yes
+  
+  - name: Install AWS CLI
+    ansible.builtin.shell: /tmp/aws/install --update
+    become: true
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /home/ubuntu/server/
+      state: directory
+      mode: '0755'
+
+  - name: Create a directory if it does not exist
+    ansible.builtin.file:
+      path: /home/ubuntu/scripts/
+      state: directory
+      mode: '0755'
+
+  - name: Download Minecraft Server Jar 
+    ansible.builtin.get_url:
+      url: https://serverjars.com/api/fetchJar/vanilla/vanilla/1.19.2
+      dest: /home/ubuntu/server/server.jar
+  
+  - name: Write eula
+    copy:
+      dest: "/home/ubuntu/server/eula.txt"
+      content: "eula=true"
+
+  - name: Pull scripts from S3
+    ansible.builtin.shell: "aws s3 sync s3://{{s3_bucket}}/scripts/ /home/ubuntu/scripts"
+  
+  - name: Make scripts executable 
+    file: path=/home/ubuntu/scripts owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes
+
+  - name: Pull server config from S3
+    ansible.builtin.shell: "aws s3 cp s3://{{s3_bucket}}/server-configs/vanilla/server.properties /home/ubuntu/server/"
+
+
+
+      
+  - name: Pull existing world save (if exists)
+    block:
+
+    - name: Pull world
+      ansible.builtin.shell: "aws s3 cp s3://{{s3_bucket}}/worlds/mc.{{instance_tags['tags']['Name']}}.zip /tmp/"
+
+    - name: Extract world
+      ansible.builtin.unarchive:
+        src:  "/tmp/mc.{{instance_tags['tags']['Name']}}.zip"  
+        dest: /home/ubuntu/server
+        remote_src: yes
+    rescue:
+      - name: Failed to pull or Extract world
+        ansible.builtin.debug:
+          msg: 'Failed to pull or extract existing world save, does it exist?'
+
+
+
+  - name: Download mcrcon tar
+    ansible.builtin.uri:
+      url: "{{mc_rcon_relase}}"
+      dest: /tmp
+
+  - name: Extract mcrcon
+    ansible.builtin.unarchive:
+      src: /tmp/mcrcon-0.7.2-linux-x86-64.tar.gz
+      dest: /usr/local/bin/
+      remote_src: true
+    become: true
+  
+
+
+# WORLD_DIR="/home/ubuntu/server/world"
+# if [ -d "$WORLD_DIR" ]; then
+#     echo "$WORLD_DIR exists."
+# else
+#     echo "Dowloading world backup"
+#     aws s3 cp s3://${bucket}/worlds/mc.$EC2_NAME.zip /tmp/
+#     unzip /tmp/mc.$EC2_NAME.zip  -d /home/ubuntu/server
+# fi
+
+  # Enable systemd service 
+  - name: template file to remote host
+    template:                 # Ansible template module
+      src: "systemd.j2"      # This is template src i.e source location 
+      dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
+    
+    become: true
+  - name: Just force systemd to reread configs (2.4 and above)
+    ansible.builtin.systemd:
+      daemon_reload: yes
+    become: true
+
+  - name: Enable the minecraft server
+    ansible.builtin.systemd:
+      name: minecraft
+      state: started
+      enabled: yes
+    become: true
+
+  # WAIT FOR IT TO START? 
+  - name: Setup auto shutdown cron job
+    ansible.builtin.cron:
+      name: "auto shutdown"
+      minute: "0"
+      hour: "5,2"
+      job: "/home/ubuntu/scripts/stop-check.sh >> /home/ubuntu/cron.log 2>&1"
+  - name: Setup auto shutdown cron job
+    ansible.builtin.cron:
+      name: "billing player check"
+      minute: "0"
+      hour: "5,2"
+      job: "/home/ubuntu/scripts/backup-world.sh >> /home/ubuntu/cron.log 2>&1"

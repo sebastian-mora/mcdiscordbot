@@ -1,0 +1,16 @@
+[Unit]
+Description=Minecraft Server
+After=network.target
+
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/server
+ExecStart=/usr/bin/java -Xmx1024M -Xms512M -jar server.jar nogui
+# ExecStartPost=/bin/sh -c "/home/ubuntu/scripts/alert.sh"
+ExecStop=/usr/local/bin/mcrcon -H 127.0.0.1 -P 25575 -p test stop
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
