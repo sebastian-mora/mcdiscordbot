@@ -110,7 +110,7 @@
     enabled: yes
   become: true
 
-# WAIT FOR IT TO START? 
+
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
     name: "auto shutdown"
