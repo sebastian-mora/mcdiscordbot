@@ -4,7 +4,7 @@ apt-get update
 apt install -y  unzip jq software-properties-common
 
 add-apt-repository --yes --update ppa:ansible/ansible
-apt install ansible
+apt install -y ansible
 
 ansible-galaxy collection install amazon.aws
 
@@ -15,12 +15,12 @@ unzip -q awscliv2.zip
 
 # Save ssh key
 /usr/local/bin/aws ssm get-parameter --name "/mc/ssh-deploy-key" --with-decryption --region us-west-2  | jq -r '.Parameter.Value' > /home/ubuntu/.ssh/ssh_deploy
-chown ubuntu /home/ubuntu/.ssh/id_rsa
-chmod 400 /home/ubuntu/.ssh/id_rsa
+chown ubuntu /home/ubuntu/.ssh/ssh_deploy
+chmod 400 /home/ubuntu/.ssh/ssh_deploy
 
 # Get fingerprint for github.com 
 ssh-keyscan github.com >> ~/.ssh/known_hosts
 
 
-(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git  -i hosts  ansible/${ansible_host_name}.yml -v >> /var/logs/ansible-pull") | crontab -u ubuntu -
+(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git --key-file ~/.ssh/ssh_deploy -i hosts  ansible/${ansible_host_name}.yml -v >> /var/logs/ansible-pull") | crontab -u ubuntu -
 
