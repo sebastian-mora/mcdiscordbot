@@ -5,6 +5,7 @@
       - openjdk-17-jdk  
       - git
       - python3-pip
+      - zip
     update_cache: yes
   become: true 
 
