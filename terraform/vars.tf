@@ -22,6 +22,11 @@ variable "rconpass" {
   sensitive = true
 }
 
+variable "ssh_deploy_key" {
+  type = string
+  senstive = true
+}
+
 
 variable "domain_name" {
   description = "The name of a domain with an existing Hosted Zone within the account"
