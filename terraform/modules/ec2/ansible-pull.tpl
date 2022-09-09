@@ -22,5 +22,5 @@ chmod 400 /home/ubuntu/.ssh/ssh_deploy
 ssh-keyscan github.com >> /home/ubuntu/.ssh/known_hosts
 
 
-(crontab -u ubuntu -l 2>/dev/null; echo "5 * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git --only-if-changed --key-file ~/.ssh/ssh_deploy -i hosts  ansible/${ansible_host_name}.yml -v >> ~/ansible-pull-logs") | crontab -u ubuntu -
+(crontab -u ubuntu -l 2>/dev/null; echo "* * * * * /usr/bin/ansible-pull -U git@github.com:sebastian-mora/mcdiscordbot.git --only-if-changed --key-file ~/.ssh/ssh_deploy -i hosts  ansible/${ansible_host_name}.yml -v >> ~/ansible-pull-logs") | crontab -u ubuntu -
 
