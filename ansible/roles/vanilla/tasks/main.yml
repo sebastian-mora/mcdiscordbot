@@ -1,0 +1,14 @@
+- name: Download Minecraft Server Jar 
+  ansible.builtin.get_url:
+    url: https://serverjars.com/api/fetchJar/vanilla/vanilla/1.19.2
+    dest: /home/ubuntu/server/server.jar
+
+- name: Write eula
+  copy:
+    dest: "/home/ubuntu/server/eula.txt"
+    content: "eula=true"
+
+- name: Copy server configs
+  ansible.builtin.copy:
+    src: '../files/server.properties'
+    dest: /home/ubuntu/server/

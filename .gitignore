@@ -4,3 +4,5 @@
 /aws
 *.tfvars
 .terraform*
+.vscode/settings.json
+ansible/inventory.yaml
