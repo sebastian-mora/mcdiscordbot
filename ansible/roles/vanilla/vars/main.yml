@@ -1,1 +1,2 @@
 MAX_GB: 4056M
+server_jar_url: https://api.papermc.io/v2/projects/paper/versions/1.19.2/builds/140/downloads/paper-1.19.2-140.jar

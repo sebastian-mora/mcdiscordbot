@@ -1,6 +1,6 @@
-- name: Download Minecraft Server Jar 
+- name: Download Paper Server Jar 
   ansible.builtin.get_url:
-    url: https://serverjars.com/api/fetchJar/vanilla/vanilla/1.19.2
+    url: "{{server_jar_url}}"
     dest: /home/ubuntu/server/server.jar
 
 - name: Write eula
