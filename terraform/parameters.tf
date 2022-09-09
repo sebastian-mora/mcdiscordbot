@@ -40,7 +40,7 @@ resource "aws_ssm_parameter" "backup-version-limit" {
 }
 
 resource "aws_ssm_parameter" "ssh-deploy-key" {
-  name  = "mc/ssh-deploy-key"
+  name  = "/mc/ssh-deploy-key"
   type  = "SecureString"
   value = var.ssh_deploy_key
 }
