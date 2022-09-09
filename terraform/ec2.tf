@@ -33,7 +33,7 @@ resource "aws_instance" "vanilla" {
     "Name"        = "vanilla"
     "Description" = "Vanilla Minecraft Server"
     "Minecraft"   = true
-    "Role" = "vanilla"
+    "Role"        = "vanilla"
   }
 }
 
@@ -49,7 +49,7 @@ resource "aws_instance" "modded" {
     "Name"        = "modded"
     "Description" = "Modded Minecraft Server"
     "Minecraft"   = true
-    "Role" = "modded"
+    "Role"        = "modded"
 
   }
 }
