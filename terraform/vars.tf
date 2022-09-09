@@ -24,7 +24,7 @@ variable "rconpass" {
 
 variable "ssh_deploy_key" {
   type     = string
-  senstive = true
+  sensitive = true
 }
 
 
