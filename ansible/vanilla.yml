@@ -1,5 +1,5 @@
 ---
-- hosts: minecraft
+- hosts: _vanilla
   roles:
     - common
     - vanilla
