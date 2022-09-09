@@ -2,6 +2,9 @@ variable "name" {
   type = string
 }
 
+variable "instance_role_arn" {
+  type = string
+}
 variable "instance_type" {
   type    = string
   default = "m5.large"
@@ -19,5 +22,13 @@ variable "ansible_host_name" {
 variable "domain_name" {
   type    = string
   default = "mc.rusecrew.com"
+}
+
+variable "security_group_ids" {
+  type = list(any)
+}
+
+variable "subnet_id" {
+  type = string
 }
 
