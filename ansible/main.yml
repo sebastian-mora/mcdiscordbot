@@ -1,9 +1,9 @@
 ---
-- hosts: _vanilla
+- hosts: localhost
   roles:
     - common
     - vanilla
-- hosts: _modded
-  roles: 
-    - common
-    - modded
+# - hosts: localhost
+#   roles: 
+#     - common
+#     - modded
