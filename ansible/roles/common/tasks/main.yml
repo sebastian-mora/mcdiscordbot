@@ -57,7 +57,7 @@
 - name: Your copy task
   copy: src={{ item.src }} dest={{ item.dest }}
   with_items:
-    - { src: '../files/scripts', dest: '/home/ubuntu/scripts' }
+    - { src: '../files/scripts', dest: '/home/ubuntu/' }
     - { src: '../files/mcrcon-0.7.2-linux-x86-64.tar.gz', dest: '/tmp' }
 
 - name: Make scripts executable 
@@ -69,7 +69,7 @@
     dest: /usr/local/bin/
     remote_src: true
   become: true
-  
+
 - name: Pull existing world save (if exists)
   block:
 
