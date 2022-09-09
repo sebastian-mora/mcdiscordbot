@@ -2,7 +2,7 @@ variable "name" {
   type = string
 }
 
-variable "instance_role_arn" {
+variable "instance_profile_name" {
   type = string
 }
 variable "instance_type" {

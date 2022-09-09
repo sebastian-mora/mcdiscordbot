@@ -28,7 +28,7 @@ resource "aws_instance" "instance" {
   associate_public_ip_address = true
   vpc_security_group_ids      = var.security_group_ids
   user_data                   = templatefile("${path.module}/ansible-pull.tpl", { ansible_host_name = var.ansible_host_name })
-  iam_instance_profile        = var.instance_role_arn
+  iam_instance_profile        = var.instance_profile_name
   tags = {
     "Name"        = var.name
     "Description" = var.description
