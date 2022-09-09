@@ -76,11 +76,11 @@
     minute: "10"
     weekday: "*"
     hour: "*"
-    job: "/home/ubuntu/scripts/stop-check.sh >> /home/ubuntu/cron.log 2>&1"
+    job: "/bin/bash /home/ubuntu/scripts/stop-check.sh >> /home/ubuntu/cron.log 2>&1"
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
     name: "billing player check"
     minute: "10"
     weekday: "*"
     hour: "*"
-    job: "/home/ubuntu/scripts/backup-world.sh >> /home/ubuntu/cron.log 2>&1"
+    job: "/bin/bash /home/ubuntu/scripts/backup-world.sh >> /home/ubuntu/cron.log 2>&1"
