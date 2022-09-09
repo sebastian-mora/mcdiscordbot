@@ -34,7 +34,7 @@
     remote_src: yes
 
 - name: Install AWS CLI
-  ansible.builtin.shell: /tmp/aws/install --update
+  ansible.builtin.shell: "/tmp/aws/install --update"
   become: true
 
 - name: Create server directory if it does not exist
