@@ -37,22 +37,22 @@ resource "aws_instance" "vanilla" {
   }
 }
 
-resource "aws_instance" "modded" {
-  ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "m5.xlarge"
-  key_name                    = aws_key_pair.deployer.key_name
-  subnet_id                   = module.vpc.public_subnets[0]
-  associate_public_ip_address = true
-  vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
-  iam_instance_profile        = aws_iam_instance_profile.test_profile.name
-  tags = {
-    "Name"        = "modded"
-    "Description" = "Modded Minecraft Server"
-    "Minecraft"   = true
-    "Role"        = "modded"
+# resource "aws_instance" "modded" {
+#   ami                         = data.aws_ami.ubuntu.id
+#   instance_type               = "m5.xlarge"
+#   key_name                    = aws_key_pair.deployer.key_name
+#   subnet_id                   = module.vpc.public_subnets[0]
+#   associate_public_ip_address = true
+#   vpc_security_group_ids      = [aws_security_group.mc-sg.id, aws_security_group.allow-ssh-public.id]
+#   iam_instance_profile        = aws_iam_instance_profile.test_profile.name
+#   tags = {
+#     "Name"        = "modded"
+#     "Description" = "Modded Minecraft Server"
+#     "Minecraft"   = true
+#     "Role"        = "modded"
 
-  }
-}
+#   }
+# }
 
 
 
