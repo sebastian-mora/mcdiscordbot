@@ -83,6 +83,7 @@
   ansible.builtin.uri:
     url: "{{mc_rcon_relase}}"
     dest: /tmp
+    force: yes
 
 - name: Extract mcrcon
   ansible.builtin.unarchive:
