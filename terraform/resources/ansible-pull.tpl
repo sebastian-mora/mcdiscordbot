@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt install -y ansible unzip jq software-properties-common
+apt install -y  unzip jq software-properties-common
 
 add-apt-repository --yes --update ppa:ansible/ansible
 apt install ansible
