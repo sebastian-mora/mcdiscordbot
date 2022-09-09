@@ -22,11 +22,6 @@ variable "rconpass" {
   sensitive = true
 }
 
-variable "mc_server_url" {
-  description = "JAR Url for mc version to download"
-  default     = "https://serverjars.com/api/fetchJar/vanilla/1.19"
-
-}
 
 variable "domain_name" {
   description = "The name of a domain with an existing Hosted Zone within the account"
