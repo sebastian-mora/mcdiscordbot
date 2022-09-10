@@ -42,7 +42,13 @@
   copy: src={{ item.src }} dest={{ item.dest }}
   with_items:
     - { src: '../files/scripts', dest: '/home/ubuntu/' }
-    - { src: '../files/mcrcon-0.7.2-linux-x86-64.tar.gz', dest: '/tmp' }
+
+- name: Download mcrcon
+  amazon.aws.aws_s3:
+    bucket: {{s3_files_bucket}}
+    object: /rcon/mcrcon-0.7.2-linux-x86-64.tar.gz
+    dest: /tmp/mcrcon-0.7.2-linux-x86-64.tar.gz
+    mode: get
 
 - name: Make scripts executable 
   file: path=/home/ubuntu/scripts owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes
@@ -58,7 +64,7 @@
   block:
 
   - name: Pull world
-    ansible.builtin.shell: "aws s3 cp s3://{{s3_bucket}}/worlds/mc.{{instance_tags['tags']['Name']}}.zip /tmp/"
+    ansible.builtin.shell: "aws s3 cp s3://{{s3_world_bucket}}/worlds/mc.{{instance_tags['tags']['Name']}}.zip /tmp/"
 
   - name: Extract world
     ansible.builtin.unarchive:
