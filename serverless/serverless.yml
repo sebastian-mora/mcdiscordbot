@@ -28,15 +28,7 @@ provider:
             - "sns:Publish"
           Resource: 
             - !Ref mcalerts
-
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:GetItem"
-            - "dynamodb:Scan"
-            - "dynamodb:PutItem"
-          Resource:
-            - ${ssm:/mc/mcdata}
-      
+                  
         - Effect: "Allow"
           Action:
             - "ec2:DescribeNetworkInterfaces"
@@ -117,28 +109,6 @@ functions:
       include:
         - functions/billingNotifiy/**
   
-  # Allow users to read player billing 
-  playerBilling:          
-    handler: functions/listPlayerBilling/listPlayerBilling.handler
-    events:
-      - http:
-          path: listPlayerBilling
-          method: get
-          private: True
-    package:
-      include:
-        - functions/listPlayerBilling/**
-
-  # Function to bill active users on servers
-
-  managePlayerBilling:          
-    handler: functions/managePlayerBilling/managePlayerBilling.handler
-    events:
-      - schedule: rate(1 minute)
-    package:
-      include:
-        - functions/managePlayerBilling/**
-
 resources:
   Resources:
     mcalerts:
