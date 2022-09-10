@@ -33,6 +33,13 @@ resource "aws_ssm_parameter" "backup-bucket" {
   value = aws_s3_bucket.mc-worlds.id
 }
 
+
+resource "aws_ssm_parameter" "server-files-bucket" {
+  name  = "/mc/server-files-bucket"
+  type  = "SecureString"
+  value = aws_s3_bucket.mc-server-files.id
+}
+
 resource "aws_ssm_parameter" "backup-version-limit" {
   name  = "/mc/version-limit"
   type  = "SecureString"

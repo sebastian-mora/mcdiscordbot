@@ -22,3 +22,16 @@ resource "aws_s3_bucket_versioning" "versioning_configuration" {
     status = "Enabled"
   }
 }
+
+resource "aws_s3_bucket" "mc-server-files" {
+  bucket = "mc-server-files-${lower(random_string.random.result)}"
+  tags = {
+    Name = "Store minecraft jar and mod files"
+  }
+}
+
+
+resource "aws_s3_bucket_acl" "acl" {
+  bucket = aws_s3_bucket.mc-mods.id
+  acl    = "private"
+}
