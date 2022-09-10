@@ -10,6 +10,12 @@ variable "instance_type" {
   default = "m5.large"
 }
 
+
+variable "aws_key_pair_name" {
+  type    = string
+  default = ""
+}
+
 variable "description" {
   type    = string
   default = "minecraft server"
