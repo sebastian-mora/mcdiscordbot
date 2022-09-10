@@ -11,7 +11,7 @@ resource "aws_s3_bucket" "mc-worlds" {
 }
 
 
-resource "aws_s3_bucket_acl" "acl" {
+resource "aws_s3_bucket_acl" "wolrds_acl" {
   bucket = aws_s3_bucket.mc-worlds.id
   acl    = "private"
 }
@@ -31,7 +31,7 @@ resource "aws_s3_bucket" "mc-server-files" {
 }
 
 
-resource "aws_s3_bucket_acl" "acl" {
+resource "aws_s3_bucket_acl" "files_acl" {
   bucket = aws_s3_bucket.mc-server-files.id
   acl    = "private"
 }
