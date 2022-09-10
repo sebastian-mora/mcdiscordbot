@@ -9,18 +9,23 @@
   ansible.builtin.shell: update-alternatives --set  java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
   become: true
 
+
 - name: Download forge-1.12.2-14.23.5.2860 installer
-  ansible.builtin.get_url:
-    url: "{{forge_installer_url}}"
+  amazon.aws.aws_s3:
+    bucket: {{s3_files_bucket}}
+    object: /serverjar/forge-1.12.2-14.23.5.2860-installer.jar
     dest: /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar
+    mode: get
 
 - name: Install server
   ansible.builtin.shell: java -jar /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar --installServer
 
 - name: Download RL craft mods 
-  ansible.builtin.get_url:
-    url: "{{rl_craft_mod_pack_url}}"
+  amazon.aws.aws_s3:
+    bucket: {{s3_files_bucket}}
+    object: "/mods/RLCraft+Server+Pack+1.12.2+-+Release+v2.9.1c.zip"
     dest: /tmp/rlcraft_mods.zip
+    mode: get
 
 - name: Extract rlcraft mods to server dir
   ansible.builtin.unarchive:
