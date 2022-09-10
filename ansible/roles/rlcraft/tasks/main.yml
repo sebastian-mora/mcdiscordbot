@@ -18,7 +18,9 @@
     mode: get
 
 - name: Install server
-  ansible.builtin.shell: java -jar /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar --installServer
+  ansible.builtin.shell: java -jar forge-1.12.2-14.23.5.2860-installer.jar --installServer
+  args:
+    chdir: /home/ubuntu/server/
 
 - name: Download RL craft mods 
   amazon.aws.aws_s3:
