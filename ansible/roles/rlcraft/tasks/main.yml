@@ -35,6 +35,11 @@
     dest: /home/ubuntu/server
     remote_src: yes
 
+- name: Overwrite server.properties files 
+  ansible.builtin.copy:
+    src: "./files/server.properties"
+    dest: /home/ubuntu/server
+
 - name: template file to remote host
   template:                 # Ansible template module
     src: "../files/systemd.j2"      # This is template src i.e source location 
