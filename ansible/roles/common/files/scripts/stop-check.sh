@@ -1,6 +1,7 @@
 #!/bin/bash
 AZ=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region -r)
-PLAYERCOUNT=$(/usr/local/bin/mcrcon -H 127.0.0.1 -P 25575 -p test "list" | cut -d ' ' -f 3)
+# the last pipe allows this command to work on 1.12
+PLAYERCOUNT=$(/usr/local/bin/mcrcon -H 127.0.0.1 -P 25575 -p test "list" | cut -d ' ' -f 3 | cut -d '/' -f 1)
 AWS_INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 EC2_NAME=$(/usr/local/bin/aws ec2 describe-tags --region $AZ --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
 SNS_TOPIC=$(/usr/local/bin/aws ssm get-parameter --name "/mc/alert-sns" --with-decryption --region $AZ  | jq -r '.Parameter.Value')
