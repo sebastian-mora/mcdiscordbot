@@ -32,6 +32,6 @@ resource "aws_s3_bucket" "mc-server-files" {
 
 
 resource "aws_s3_bucket_acl" "acl" {
-  bucket = aws_s3_bucket.mc-mods.id
+  bucket = aws_s3_bucket.mc-server-files.id
   acl    = "private"
 }
