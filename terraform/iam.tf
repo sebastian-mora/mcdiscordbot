@@ -51,6 +51,8 @@ resource "aws_iam_role_policy" "test_policy" {
             "Resource": [
                 "${aws_s3_bucket.mc-worlds.arn}/*",
                 "${aws_s3_bucket.mc-worlds.arn}",
+                "${aws_s3_bucket.mc-server-files.arn}/*",
+                "${aws_s3_bucket.mc-server-files.arn}",
                 "${aws_dynamodb_table.mc-table.arn}"
             ]
         },
