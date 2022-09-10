@@ -42,9 +42,6 @@ resource "aws_iam_role_policy" "test_policy" {
             "Action": [
                 "s3:PutObject",
                 "s3:GetObject",
-                "dynamodb:PutItem",
-                "dynamodb:GetItem",
-                "dynamodb:Scan",
                 "s3:ListBucket",
                 "s3:DeleteObject"
             ],
@@ -52,8 +49,7 @@ resource "aws_iam_role_policy" "test_policy" {
                 "${aws_s3_bucket.mc-worlds.arn}/*",
                 "${aws_s3_bucket.mc-worlds.arn}",
                 "${aws_s3_bucket.mc-server-files.arn}/*",
-                "${aws_s3_bucket.mc-server-files.arn}",
-                "${aws_dynamodb_table.mc-table.arn}"
+                "${aws_s3_bucket.mc-server-files.arn}"
             ]
         },
         {

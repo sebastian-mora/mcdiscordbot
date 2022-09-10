@@ -2,11 +2,6 @@
 # Stores the resource ARNS required by SLS
 
 
-resource "aws_ssm_parameter" "dynamodb-mc" {
-  name  = "/mc/${aws_dynamodb_table.mc-table.name}"
-  type  = "SecureString"
-  value = aws_dynamodb_table.mc-table.arn
-}
 
 
 resource "aws_ssm_parameter" "discord-webhook" {
