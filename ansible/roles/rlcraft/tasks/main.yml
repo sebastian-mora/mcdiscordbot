@@ -9,13 +9,13 @@
   ansible.builtin.shell: update-alternatives --set  java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
   become: true
 
-- name: Download forge-1.12.2-14.23.5.2860 
+- name: Download forge-1.12.2-14.23.5.2860 installer
   ansible.builtin.get_url:
-    url: "{{server_jar_url}}"
-    dest: /home/ubuntu/server/server.jar
+    url: "{{forge_installer_url}}"
+    dest: /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar
 
 - name: Install server
-  ansible.builtin.shell: java -jar /home/ubuntu/server/server.jar --installServer
+  ansible.builtin.shell: java -jar /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar --installServer
 
 - name: Download RL craft mods 
   ansible.builtin.get_url:
