@@ -1,0 +1,43 @@
+- name: Install a list of packages
+  ansible.builtin.apt:
+    pkg:
+      - openjdk-8-jre
+    update_cache: yes
+  become: true 
+
+- name: Download forge-1.12.2-14.23.5.2860 
+  ansible.builtin.get_url:
+    url: "{{server_jar_url}}"
+    dest: /home/ubuntu/server/server.jar
+
+- name: Install server
+  ansible.builtin.shell: java -jar server.jar --installServer
+
+- name: Download RL craft mods 
+  ansible.builtin.get_url:
+    url: "{{rl_craft_mod_pack_url}}"
+    dest: /tmp/rlcraft_mods.zip
+
+- name: Extract rlcraft mods to server dir
+  ansible.builtin.unarchive:
+    src:  "/tmp/rlcraft_mods.zip"  
+    dest: /home/ubuntu/server
+    remote_src: yes
+
+- name: template file to remote host
+  template:                 # Ansible template module
+    src: "../files/systemd.j2"      # This is template src i.e source location 
+    dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
+  become: true
+  
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Enable the minecraft server
+  ansible.builtin.systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+  become: true
