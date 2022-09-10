@@ -1,7 +1,7 @@
 #!/bin/bash
 
 apt-get update
-apt install -y  unzip jq software-properties-common
+apt install -y  unzip jq software-properties-common python3-pip
 
 add-apt-repository --yes --update ppa:ansible/ansible
 apt install -y ansible
@@ -12,6 +12,9 @@ ansible-galaxy collection install amazon.aws
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip -q awscliv2.zip
 ./aws/install
+
+# Install python pip 
+yes | pip install boto3
 
 # Save ssh key
 /usr/local/bin/aws ssm get-parameter --name "/mc/ssh-deploy-key" --with-decryption --region us-west-2  | jq -r '.Parameter.Value' > /home/ubuntu/.ssh/ssh_deploy
