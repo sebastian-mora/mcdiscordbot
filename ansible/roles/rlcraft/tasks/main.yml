@@ -5,6 +5,10 @@
     update_cache: yes
   become: true 
 
+- name: Set default java version to jdk 8
+  ansible.builtin.shell: update-alternatives --set  java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+  become: true
+
 - name: Download forge-1.12.2-14.23.5.2860 
   ansible.builtin.get_url:
     url: "{{server_jar_url}}"
