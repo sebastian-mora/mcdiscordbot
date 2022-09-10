@@ -11,7 +11,7 @@
     dest: /home/ubuntu/server/server.jar
 
 - name: Install server
-  ansible.builtin.shell: java -jar server.jar --installServer
+  ansible.builtin.shell: java -jar /home/ubuntu/server/server.jar --installServer
 
 - name: Download RL craft mods 
   ansible.builtin.get_url:
