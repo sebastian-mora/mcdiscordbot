@@ -11,7 +11,7 @@
     content: "eula=true"
 
 - name: Copy server configs
-  ansible.builtin.copy:
+  template:
     src: '../files/server.properties'
     dest: /home/ubuntu/server/
 

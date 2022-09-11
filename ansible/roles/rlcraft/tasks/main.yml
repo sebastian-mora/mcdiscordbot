@@ -36,7 +36,7 @@
     remote_src: yes
 
 - name: Overwrite server.properties files 
-  ansible.builtin.copy:
+  template:
     src: "./files/server.properties"
     dest: /home/ubuntu/server
 
