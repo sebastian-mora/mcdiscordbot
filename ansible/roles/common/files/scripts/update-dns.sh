@@ -15,7 +15,7 @@ RECORDSET="$EC2_NAME.mc.rusecrew.com"
 
 # More advanced options below
 # The Time-To-Live of this recordset
-TTL=60
+TTL="60"
 # Change this if you want
 COMMENT="Auto updating @ `date`"
 # Change to AAAA if using an IPv6 address
