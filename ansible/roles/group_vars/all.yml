@@ -1,2 +1,3 @@
 s3_files_bucket: "{{ lookup('aws_ssm', '/mc/server-files-bucket', region='us-west-2') }}"
 s3_world_bucket: "{{ lookup('aws_ssm', '/mc/backup-bucket', region='us-west-2') }}"
+rconpass: "{{ lookup('aws_ssm', '/mc/rconpass', region='us-west-2') }}"
