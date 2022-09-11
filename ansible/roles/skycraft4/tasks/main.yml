@@ -29,8 +29,8 @@
     dest: "{{ item }}"
     mode: a+x
   loop: 
-    - "/home/ubuntu/Install.sh.sh"
-    - "/home/ubuntu/ServerStart.sh"
+    - "/home/ubuntu/server/Install.sh"
+    - "/home/ubuntu/server/ServerStart.sh"
     - "/home/ubuntu/server/settings.sh"
 
 - name: Install Server 
