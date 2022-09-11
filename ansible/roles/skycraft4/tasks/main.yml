@@ -14,7 +14,7 @@
 - name: Download RL craft mods 
   amazon.aws.aws_s3:
     bucket: "{{s3_files_bucket}}"
-    object: "/mods/SkyFactory-4_Server_4_2_4.zip "
+    object: "/mods/SkyFactory-4_Server_4_2_4.zip"
     dest: /tmp/skyfactory_mods.zip
     mode: get
 
