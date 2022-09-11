@@ -4,6 +4,7 @@
 # depending on how you run this script
 #PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 AZ=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | jq .region -r)
+AWS_INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
 EC2_NAME=$(/usr/local/bin/aws ec2 describe-tags --region $AZ --filters "Name=resource-id,Values=$AWS_INSTANCE_ID" "Name=key,Values=Name" --output text | cut -f5)
 
 # Hosted Zone ID e.g. BJBK35SKMM9OE
