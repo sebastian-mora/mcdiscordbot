@@ -35,6 +35,8 @@
 
 - name: Install Server 
   ansible.builtin.shell: /home/ubuntu/server/Install.sh
+  args:
+    chdir: /home/ubuntu/server/
 
 - name: Overwrite server.properties files 
   ansible.builtin.copy:
