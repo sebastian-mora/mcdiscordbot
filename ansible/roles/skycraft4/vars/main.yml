@@ -1,0 +1,1 @@
+s3_files_bucket: "{{ lookup('aws_ssm', '/mc/server-files-bucket', region='us-west-2') }}"

@@ -1,0 +1,51 @@
+- name: Install a list of packages
+  ansible.builtin.apt:
+    pkg:
+      - openjdk-8-jre
+    update_cache: yes
+  become: true 
+
+- name: Set default java version to jdk 8
+  ansible.builtin.shell: update-alternatives --set  java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
+  become: true
+
+
+
+- name: Download RL craft mods 
+  amazon.aws.aws_s3:
+    bucket: "{{s3_files_bucket}}"
+    object: "/mods/SkyFactory-4_Server_4_2_4.zip "
+    dest: /tmp/skyfactory_mods.zip
+    mode: get
+
+- name: Extract rlcraft mods to server dir
+  ansible.builtin.unarchive:
+    src:  "/tmp/skyfactory_mods.zip"  
+    dest: /home/ubuntu/server
+    remote_src: yes
+
+- name: Install Server 
+  ansible.builtin.shell: /bin/bash /home/ubuntu/server/Install.sh
+
+- name: Overwrite server.properties files 
+  ansible.builtin.copy:
+    src: "./files/server.properties"
+    dest: /home/ubuntu/server
+
+- name: template file to remote host
+  template:                 # Ansible template module
+    src: "../files/systemd.j2"      # This is template src i.e source location 
+    dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
+  become: true
+  
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Enable the minecraft server
+  ansible.builtin.systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+  become: true
