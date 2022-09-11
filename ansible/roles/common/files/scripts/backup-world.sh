@@ -19,4 +19,4 @@ filename=mc.$EC2_NAME.zip
 (cd /home/ubuntu/server && zip  -q -r - world/) > $filename
 /usr/local/bin/aws s3 mv $filename s3://$BUCKET/worlds/
 
-/usr/local/bin/mcrcon -p test "say Backup saved to S3 bucket"
+/usr/local/bin/mcrcon -p "$RCONPASS" "say Backup saved to S3 bucket"
