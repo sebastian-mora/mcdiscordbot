@@ -24,6 +24,15 @@
     dest: /home/ubuntu/server
     remote_src: yes
 
+- name: Make install and runner scripts executable
+  file:
+    dest: "{{ item }}"
+    mode: a+x
+  loop: 
+    - "Install.sh"
+    - "StartServer.sh"
+    - "Settings.sh"
+
 - name: Install Server 
   ansible.builtin.shell: /home/ubuntu/server/Install.sh
 
