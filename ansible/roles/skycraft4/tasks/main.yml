@@ -25,7 +25,7 @@
     remote_src: yes
 
 - name: Install Server 
-  ansible.builtin.shell: /bin/bash /home/ubuntu/server/Install.sh
+  ansible.builtin.shell: /home/ubuntu/server/Install.sh
 
 - name: Overwrite server.properties files 
   ansible.builtin.copy:
