@@ -29,9 +29,9 @@
     dest: "{{ item }}"
     mode: a+x
   loop: 
-    - "/home/ubuntu/serverInstall.sh"
-    - "/home/ubuntu/serverStartServer.sh"
-    - "/home/ubuntu/server/Settings.sh"
+    - "/home/ubuntu/Install.sh.sh"
+    - "/home/ubuntu/ServerStart.sh"
+    - "/home/ubuntu/server/settings.sh"
 
 - name: Install Server 
   ansible.builtin.shell: /home/ubuntu/server/Install.sh
