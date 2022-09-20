@@ -105,7 +105,7 @@
     dest: /tmp/amazon-cloudwatch-agent.deb
 
 - name: Install cloudwatch agent 
-  ansible.builtin.shell: dpkg -i -E ./amazon-cloudwatch-agent.deb
+  ansible.builtin.shell: dpkg -i -E /tmp/amazon-cloudwatch-agent.deb
   become: true
 
 - name: Copy file with owner and permission, using symbolic representation
