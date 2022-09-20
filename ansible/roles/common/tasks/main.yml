@@ -110,7 +110,7 @@
 
 - name: Copy file with owner and permission, using symbolic representation
   ansible.builtin.copy:
-    src: ../files/cloudwatch.conf
+    src: ../files/config.json
     dest: /opt/aws/amazon-cloudwatch-agent/bin/config.json
   become: true
 
