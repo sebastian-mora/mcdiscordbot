@@ -18,6 +18,18 @@
 						"log_group_name": "mc/server-logs-latest",
 						"log_stream_name": "{instance_id}",
 						"retention_in_days": 60
+					},
+					{
+						"file_path": "/home/ubuntu/ansible-pull-logs",
+						"log_group_name": "mc/ansible",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": 60
+					},
+					{
+						"file_path": "/home/ubuntu/cron.log",
+						"log_group_name": "mc/cron-log",
+						"log_stream_name": "{instance_id}",
+						"retention_in_days": 60
 					}
 				]
 			}
