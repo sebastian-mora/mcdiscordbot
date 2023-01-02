@@ -1,7 +1,7 @@
 - name: Download paper jar
   amazon.aws.aws_s3:
     bucket: "{{s3_files_bucket}}"
-    object: /serverjar/paper-1.19.2-141.jar
+    object: /serverjar/paper-1.19.3-367.jar
     dest: /home/ubuntu/server/server.jar
     mode: get
 
