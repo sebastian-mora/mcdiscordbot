@@ -96,7 +96,7 @@
 - name: Setup dns cron job
   ansible.builtin.cron:
     name: "Setup DDNS for mc.rusecrew.com"
-    minute: "10"
+    minute: "1"
     weekday: "*"
     hour: "*"
     job: "/bin/bash /home/ubuntu/scripts/update-dns.sh >> /home/ubuntu/cron.log 2>&1"
