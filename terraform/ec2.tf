@@ -8,6 +8,7 @@ module "vanilla" {
   name                  = "vanilla"
   ansible_host_name     = "vanilla"
   instance_type         = "m5.large"
+  description           = "Vanilla MC Version: 1.20.4"
   aws_key_pair_name     = aws_key_pair.deployer.key_name
   instance_profile_name = aws_iam_role.minecraft_server_role.name
   subnet_id             = module.vpc.public_subnets[0]
