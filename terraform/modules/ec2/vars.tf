@@ -25,11 +25,6 @@ variable "ansible_host_name" {
   type = string
 }
 
-variable "domain_name" {
-  type    = string
-  default = "mc.rusecrew.com"
-}
-
 variable "security_group_ids" {
   type = list(any)
 }
