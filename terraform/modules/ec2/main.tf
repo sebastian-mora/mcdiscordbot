@@ -28,5 +28,9 @@ resource "aws_instance" "instance" {
     "Description" = var.description
     "Minecraft"   = true
   }
+
+  root_block_device {
+    volume_size = var.disk_size
+  }
 }
 

@@ -33,3 +33,8 @@ variable "subnet_id" {
   type = string
 }
 
+variable "disk_size" {
+  type    = number
+  default = 8
+}
+
