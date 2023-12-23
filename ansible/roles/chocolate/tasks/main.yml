@@ -45,6 +45,9 @@
     path: /home/ubuntu/server/start.sh
     mode: 0755
 
+- name: Write Java args to var file
+  ansinble.builtin.shell: echo "-Xmx7G" >> /home/ubuntu/server/user_jvm_args.txt
+
 - name: template file to remote host
   template:                 # Ansible template module
     src: "../files/systemd.j2"      # This is template src i.e source location 
