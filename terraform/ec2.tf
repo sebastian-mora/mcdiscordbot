@@ -19,7 +19,7 @@ module "chocolate" {
   source                = "./modules/ec2"
   name                  = "chocolate"
   ansible_host_name     = "chocolate"
-  instance_type         = "m5.large"
+  instance_type         = "m5a.xlarge"
   disk_size             = 20 # 20GB
   description           = "Chocolate MC Version: 1.4.3"
   aws_key_pair_name     = aws_key_pair.deployer.key_name
