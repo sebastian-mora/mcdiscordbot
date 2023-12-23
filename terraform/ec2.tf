@@ -14,3 +14,15 @@ module "vanilla" {
   subnet_id             = module.vpc.public_subnets[0]
   security_group_ids    = [aws_security_group.mc_sg.id, aws_security_group.allow_ssh_public.id]
 }
+
+module "chocolate" {
+  source                = "./modules/ec2"
+  name                  = "chocolate"
+  ansible_host_name     = "chocolate"
+  instance_type         = "m5.large"
+  description           = "Chocolate MC Version: 1.19.2"
+  aws_key_pair_name     = aws_key_pair.deployer.key_name
+  instance_profile_name = aws_iam_role.minecraft_server_role.name
+  subnet_id             = module.vpc.public_subnets[0]
+  security_group_ids    = [aws_security_group.mc_sg.id, aws_security_group.allow_ssh_public.id]
+}
