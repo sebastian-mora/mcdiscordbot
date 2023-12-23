@@ -21,7 +21,7 @@ module "chocolate" {
   ansible_host_name     = "chocolate"
   instance_type         = "m5.large"
   disk_size             = 20 # 20GB
-  description           = "Chocolate MC Version: 1.19.2"
+  description           = "Chocolate MC Version: 1.4.3"
   aws_key_pair_name     = aws_key_pair.deployer.key_name
   instance_profile_name = aws_iam_role.minecraft_server_role.name
   subnet_id             = module.vpc.public_subnets[0]
