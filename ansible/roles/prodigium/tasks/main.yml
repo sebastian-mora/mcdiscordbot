@@ -1,0 +1,45 @@
+- name: Prodigium Mods Zip
+  amazon.aws.aws_s3:
+    bucket: "{{s3_files_bucket}}"
+    object: "/mods/Prodigium+Reforged+serverpack.zip"
+    dest: /tmp/Prodigium+Reforged+serverpack.zip
+    mode: get
+
+- name: Extract mods to server dir
+  ansible.builtin.unarchive:
+    src:  "/tmp/Prodigium+Reforged+serverpack.zip"  
+    dest: /home/ubuntu/server
+    remote_src: yes
+
+- name: Overwrite server.properties files 
+  template:
+    src: "./files/server.properties"
+    dest: /home/ubuntu/server
+
+- name: Make start file executable
+  ansible.builtin.file:
+    path: /home/ubuntu/server/start.sh
+    mode: 0755
+
+- name: Overwrite the user_jvm_args.txt file
+  template:
+    src: "./files/user_jvm_args.txt"
+    dest: /home/ubuntu/server/user_jvm_args.txt
+
+- name: template file to remote host
+  template:                 # Ansible template module
+    src: "../files/systemd.j2"      # This is template src i.e source location 
+    dest: /etc/systemd/system/minecraft.service    # Destination of Remote host
+  become: true
+  
+- name: Just force systemd to reread configs (2.4 and above)
+  ansible.builtin.systemd:
+    daemon_reload: yes
+  become: true
+
+- name: Enable the minecraft server
+  ansible.builtin.systemd:
+    name: minecraft
+    state: started
+    enabled: yes
+  become: true
