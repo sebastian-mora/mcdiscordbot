@@ -61,21 +61,32 @@
     remote_src: true
   become: true
 
-- name: Pull existing world save (if exists)
-  block:
+- name: Conditional Pull and Extract World Save
+  hosts: your_target_hosts
+  become: yes
+  tasks:
+    - name: Check if world file exists
+      ansible.builtin.stat:
+        path: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
+      register: world_file_status
 
-  - name: Pull world
-    ansible.builtin.shell: "aws s3 cp s3://{{s3_world_bucket}}/worlds/mc.{{instance_tags['tags']['Name']}}.zip /tmp/"
+    - name: Pull and Extract world if it does not exist
+      ansible.builtin.block:
+        block:
+          - name: Pull world
+            ansible.builtin.shell: "aws s3 cp s3://{{ s3_world_bucket }}/worlds/mc.{{ instance_tags['tags']['Name'] }}.zip /tmp/"
 
-  - name: Extract world
-    ansible.builtin.unarchive:
-      src:  "/tmp/mc.{{instance_tags['tags']['Name']}}.zip"  
-      dest: /home/ubuntu/server
-      remote_src: yes
-  rescue:
-    - name: Failed to pull or Extract world
-      ansible.builtin.debug:
-        msg: 'Failed to pull or extract existing world save, does it exist?'
+          - name: Extract world
+            ansible.builtin.unarchive:
+              src: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
+              dest: /home/ubuntu/server
+              remote_src: yes
+        rescue:
+          - name: Failed to pull or extract existing world save
+            ansible.builtin.debug:
+              msg: 'Failed to pull or extract existing world save, does it exist?'
+      when: world_file_status.stat.exists == False
+
 
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
