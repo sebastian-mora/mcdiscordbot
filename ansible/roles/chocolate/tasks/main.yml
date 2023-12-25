@@ -1,27 +1,3 @@
-# - name: Install a list of packages
-#   ansible.builtin.apt:
-#     pkg:
-#       - openjdk-8-jre
-#     update_cache: yes
-#   become: true 
-
-# - name: Set default java version to jdk 8
-#   ansible.builtin.shell: update-alternatives --set  java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java
-#   become: true
-
-
-# - name: Download forge-1.12.2-14.23.5.2860 installer
-#   amazon.aws.aws_s3:
-#     bucket: "{{s3_files_bucket}}"
-#     object: /serverjar/forge-1.12.2-14.23.5.2860-installer.jar
-#     dest: /home/ubuntu/server/forge-1.12.2-14.23.5.2860-installer.jar
-#     mode: get
-
-# - name: Install server
-#   ansible.builtin.shell: java -jar forge-1.12.2-14.23.5.2860-installer.jar --installServer
-#   args:
-#     chdir: /home/ubuntu/server/
-
 - name: Download Chocolate Mods Zip
   amazon.aws.aws_s3:
     bucket: "{{s3_files_bucket}}"
@@ -45,8 +21,10 @@
     path: /home/ubuntu/server/start.sh
     mode: 0755
 
-- name: Write Java args to var file
-  ansible.builtin.shell: echo "-Xmx15G" >> /home/ubuntu/server/user_jvm_args.txt
+- name: Copy variables file to variables.txt
+  copy:
+    src: "./files/variables.txt"
+    dest: /home/ubuntu/server/variables.txt
 
 - name: template file to remote host
   template:                 # Ansible template module
