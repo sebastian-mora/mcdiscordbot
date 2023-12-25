@@ -27,7 +27,7 @@ if [ "$PLAYERCOUNT" -eq "0" ]; then
 
     if [ $? -eq 0 ]; then
         sleep 5  # Add a 5-second delay
-        SHUTDOWN_MESSAGE="Shutting down ${EC2_NAME} due to inactivity. $WORLD_TIME_OUTPUT"
+        SHUTDOWN_MESSAGE="Shutting down ${EC2_NAME} due to inactivity. \n $WORLD_TIME_OUTPUT"
         /usr/local/bin/aws sns publish --region "$AZ" --topic-arn "${SNS_TOPIC}" --message "$SHUTDOWN_MESSAGE"
         sudo shutdown -h now
         echo "$SHUTDOWN_MESSAGE"

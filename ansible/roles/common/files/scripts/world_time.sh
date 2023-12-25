@@ -4,7 +4,7 @@
 uuids=$(jq -r 'keys_unsorted[]' /home/ubuntu/server/usernamecache.json)
 
 # Variable to store the multiline message
-multiline_message=""
+multiline_message="Total World Time"$'\n'
 
 # Loop over each UUID
 for uuid in $uuids; do
