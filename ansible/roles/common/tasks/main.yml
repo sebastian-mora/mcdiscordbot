@@ -65,12 +65,12 @@
   hosts: your_target_hosts
   become: yes
   tasks:
-    - name: Check if world file exists
+    - name: Check if /home/ubuntu/server/world directory exists
       ansible.builtin.stat:
-        path: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
-      register: world_file_status
+        path: "/home/ubuntu/server/world"
+      register: world_directory_status
 
-    - name: Pull and Extract world if it does not exist
+    - name: Pull and Extract world if /home/ubuntu/server/world does not exist
       ansible.builtin.block:
         block:
           - name: Pull world
@@ -85,7 +85,8 @@
           - name: Failed to pull or extract existing world save
             ansible.builtin.debug:
               msg: 'Failed to pull or extract existing world save, does it exist?'
-      when: world_file_status.stat.exists == False
+      when: world_directory_status.stat.exists == False
+
 
 
 - name: Setup auto shutdown cron job
