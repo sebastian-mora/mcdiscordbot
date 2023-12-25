@@ -18,7 +18,7 @@
 
 - name: Make start file executable
   ansible.builtin.file:
-    path: /home/ubuntu/server/start.sh
+    path: /home/ubuntu/server/run.sh
     mode: 0755
 
 - name: Overwrite the user_jvm_args.txt file
