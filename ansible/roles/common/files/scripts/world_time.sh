@@ -23,7 +23,7 @@ for uuid in $uuids; do
         total_hours=$(awk "BEGIN {print $total_world_time / 72000}")
 
         # Append to the multiline message
-        multiline_message+="Username: $username : $total_hours hours"$'\n'
+        multiline_message+="$username : $total_hours hours"$'\n'
     else
         multiline_message+="Error: JSON file not found for $uuid"$'\n'
     fi
