@@ -64,6 +64,7 @@
     remote_src: true
   become: true
 
+
 - name: Conditional Pull and Extract World Save
   block:
     - name: Check if /home/ubuntu/server/world directory exists
@@ -72,22 +73,22 @@
       register: world_directory_status
 
     - name: Pull and Extract world if /home/ubuntu/server/world does not exist
-      ansible.builtin.block:
-        block:
-          - name: Pull world
-            ansible.builtin.shell: "aws s3 cp s3://{{ s3_world_bucket }}/worlds/mc.{{ instance_tags['tags']['Name'] }}.zip /tmp/"
+      block:
+        - name: Pull world
+          ansible.builtin.shell: "aws s3 cp s3://{{ s3_world_bucket }}/worlds/mc.{{ instance_tags['tags']['Name'] }}.zip /tmp/"
 
-          - name: Extract world
-            ansible.builtin.unarchive:
-              src: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
-              dest: "/home/ubuntu/server"
-              remote_src: yes
-        rescue:
-          - name: Failed to pull or extract existing world save
-            ansible.builtin.debug:
-              msg: 'Failed to pull or extract the existing world save. Does it exist?'
+        - name: Extract world
+          ansible.builtin.unarchive:
+            src: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
+            dest: "/home/ubuntu/server"
+            remote_src: yes
+      rescue:
+        - name: Failed to pull or extract existing world save
+          ansible.builtin.debug:
+            msg: 'Failed to pull or extract the existing world save. Does it exist?'
       when: not world_directory_status.stat.exists
-  become: true
+
+
 
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
