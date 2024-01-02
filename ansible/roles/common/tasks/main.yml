@@ -1,16 +1,15 @@
-
-- name: Install a list of packages
+- name: Install required packages
   ansible.builtin.apt:
     pkg:
-      - openjdk-17-jdk  
+      - openjdk-17-jdk
       - git
       - python3-pip
       - zip
       - collectd
     update_cache: yes
-  become: true 
+  become: true
 
-- name: Install boto3 python package
+- name: Install boto3 Python package
   ansible.builtin.pip:
     name: boto3
 
@@ -18,41 +17,45 @@
 
 - name: Retrieve all tags on an instance
   amazon.aws.ec2_tag_info:
-    resource: "{{ansible_ec2_instance_id}}"
+    resource: "{{ ansible_ec2_instance_id }}"
     region: us-west-2
   register: instance_tags
 
-- name: Create server directory if it does not exist
+- name: Create server and scripts directories if they do not exist
   ansible.builtin.file:
-    path: /home/ubuntu/server/
+    path: "{{ item }}"
     state: directory
     mode: '0755'
-
-- name: Create scripts directory if it does not exist
-  ansible.builtin.file:
-    path: /home/ubuntu/scripts/
-    state: directory
-    mode: '0755'
+  loop:
+    - /home/ubuntu/server/
+    - /home/ubuntu/scripts/
 
 - name: Write eula
   copy:
     dest: "/home/ubuntu/server/eula.txt"
     content: "eula=true"
 
-- name: Your copy task
-  copy: src={{ item.src }} dest={{ item.dest }}
-  with_items:
-    - { src: '../files/scripts', dest: '/home/ubuntu/' }
+- name: Copy scripts
+  copy:
+    src: '../files/scripts'
+    dest: '/home/ubuntu/'
+  become: true
 
 - name: Download mcrcon
   amazon.aws.aws_s3:
-    bucket: "{{s3_files_bucket}}"
+    bucket: "{{ s3_files_bucket }}"
     object: rcon/mcrcon-0.7.2-linux-x86-64.tar.gz
     dest: /tmp/mcrcon-0.7.2-linux-x86-64.tar.gz
     mode: get
 
-- name: Make scripts executable 
-  file: path=/home/ubuntu/scripts owner=ubuntu group=ubuntu mode=0775 state=directory recurse=yes
+- name: Make scripts executable
+  file:
+    path: /home/ubuntu/scripts
+    owner: ubuntu
+    group: ubuntu
+    mode: '0775'
+    state: directory
+    recurse: yes
 
 - name: Extract mcrcon
   ansible.builtin.unarchive:
@@ -62,9 +65,7 @@
   become: true
 
 - name: Conditional Pull and Extract World Save
-  hosts: your_target_hosts
-  become: yes
-  tasks:
+  block:
     - name: Check if /home/ubuntu/server/world directory exists
       ansible.builtin.stat:
         path: "/home/ubuntu/server/world"
@@ -79,15 +80,14 @@
           - name: Extract world
             ansible.builtin.unarchive:
               src: "/tmp/mc.{{ instance_tags['tags']['Name'] }}.zip"
-              dest: /home/ubuntu/server
+              dest: "/home/ubuntu/server"
               remote_src: yes
         rescue:
           - name: Failed to pull or extract existing world save
             ansible.builtin.debug:
-              msg: 'Failed to pull or extract existing world save, does it exist?'
-      when: world_directory_status.stat.exists == False
-
-
+              msg: 'Failed to pull or extract the existing world save. Does it exist?'
+      when: not world_directory_status.stat.exists
+  become: true
 
 - name: Setup auto shutdown cron job
   ansible.builtin.cron:
@@ -118,16 +118,16 @@
     url: https://s3.amazonaws.com/amazoncloudwatch-agent/ubuntu/amd64/latest/amazon-cloudwatch-agent.deb
     dest: /tmp/amazon-cloudwatch-agent.deb
 
-- name: Install cloudwatch agent 
+- name: Install cloudwatch agent
   ansible.builtin.shell: dpkg -i -E /tmp/amazon-cloudwatch-agent.deb
   become: true
 
-- name: Copy file with owner and permission, using symbolic representation
+- name: Copy config file with owner and permission
   ansible.builtin.copy:
     src: ../files/config.json
     dest: /opt/aws/amazon-cloudwatch-agent/bin/config.json
   become: true
 
-- name: Install cloudwatch agent 
+- name: Install cloudwatch agent
   ansible.builtin.shell: /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -s -c file:/opt/aws/amazon-cloudwatch-agent/bin/config.json
   become: true
